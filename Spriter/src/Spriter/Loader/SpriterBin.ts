@@ -194,42 +194,6 @@
         }
 
         // -------------------------------------------------------------------------
-        private parseInt(aElement: any, aAttributeName: string, aDefaultValue: number = 0): number {
-            var value = aElement[this.translateAttributeName(aAttributeName)];
-            if (value === undefined) {
-                return aDefaultValue;
-            }
-
-            return typeof (value) === "number" ? value : parseInt(value);
-        }
-
-        // -------------------------------------------------------------------------
-        protected parseFloat(aElement: any, aAttributeName: string, aDefaultValue: number = 0): number {
-            var value = aElement[this.translateAttributeName(aAttributeName)];
-            if (value === undefined) {
-                return aDefaultValue;
-            }
-
-            return typeof (value) === "number" ? value : parseFloat(value);
-        }
-
-        // -------------------------------------------------------------------------
-        protected parseBoolean(aElement: any, aAttributeName: string, aDefaultValue: boolean = false): boolean {
-            var value = aElement[this.translateAttributeName(aAttributeName)];
-            if (value === undefined) {
-                return aDefaultValue;
-            }
-
-            return typeof (value) === "boolean" ? value : (value === "true");
-        }
-
-        // -------------------------------------------------------------------------
-        protected parseString(aElement: any, aAttributeName: string, aDefaultValue: string = ""): string {
-            var value = aElement[this.translateAttributeName(aAttributeName)];
-            return value === undefined ? aDefaultValue : value;
-        }
-
-        // -------------------------------------------------------------------------
         public getNodes(aNodeName: string): ISpriterNodeList {
             return new NodeListBin(this, this.getSubNodesOfElementType(1, this._elements[aNodeName]));
         }
