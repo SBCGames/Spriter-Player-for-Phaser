@@ -395,39 +395,6 @@ var Spriter;
             return String.fromCharCode.apply(null, chars);
         };
         // -------------------------------------------------------------------------
-        SpriterBin.prototype.parseInt = function (aElement, aAttributeName, aDefaultValue) {
-            if (aDefaultValue === void 0) { aDefaultValue = 0; }
-            var value = aElement[this.translateAttributeName(aAttributeName)];
-            if (value === undefined) {
-                return aDefaultValue;
-            }
-            return typeof (value) === "number" ? value : parseInt(value);
-        };
-        // -------------------------------------------------------------------------
-        SpriterBin.prototype.parseFloat = function (aElement, aAttributeName, aDefaultValue) {
-            if (aDefaultValue === void 0) { aDefaultValue = 0; }
-            var value = aElement[this.translateAttributeName(aAttributeName)];
-            if (value === undefined) {
-                return aDefaultValue;
-            }
-            return typeof (value) === "number" ? value : parseFloat(value);
-        };
-        // -------------------------------------------------------------------------
-        SpriterBin.prototype.parseBoolean = function (aElement, aAttributeName, aDefaultValue) {
-            if (aDefaultValue === void 0) { aDefaultValue = false; }
-            var value = aElement[this.translateAttributeName(aAttributeName)];
-            if (value === undefined) {
-                return aDefaultValue;
-            }
-            return typeof (value) === "boolean" ? value : (value === "true");
-        };
-        // -------------------------------------------------------------------------
-        SpriterBin.prototype.parseString = function (aElement, aAttributeName, aDefaultValue) {
-            if (aDefaultValue === void 0) { aDefaultValue = ""; }
-            var value = aElement[this.translateAttributeName(aAttributeName)];
-            return value === undefined ? aDefaultValue : value;
-        };
-        // -------------------------------------------------------------------------
         SpriterBin.prototype.getNodes = function (aNodeName) {
             return new Spriter.NodeListBin(this, this.getSubNodesOfElementType(1, this._elements[aNodeName]));
         };
