@@ -1,4 +1,5 @@
-﻿module Spriter {
+﻿/// <reference path="../../lib/phaser.d.ts" />
+module Spriter {
 
     export class SpriterGroup extends Phaser.Group {
 

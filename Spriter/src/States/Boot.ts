@@ -1,4 +1,5 @@
-﻿module SpriterExample {
+﻿/// <reference path="../../lib/phaser.d.ts" />
+module SpriterExample {
     export class Boot extends Phaser.State {
 
         // -------------------------------------------------------------------------
