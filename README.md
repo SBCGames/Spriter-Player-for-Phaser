@@ -4,17 +4,18 @@
 **2016-02-20**
 
 Added Pro features:
- - character maps,
- - tags,
- - variables (int and float variables are not interpolated),
- - events,
+ - character maps
+ - tags
+ - variables (int and float variables are not interpolated)
+ - events
  - sound events (instead of playing sound directly, the player fires event with name of sound to be played)
 
- Most of the code is rewritten.
+Most of the code is rewritten.
  
- Currently only loading of .scml (.xml) and .scon (.json) produced by Spriter export works. Loading of minimized versions and loading of binary will be added later.
+Currently only loading of .scml (.xml) and .scon (.json) produced by Spriter export works. Loading of minimized versions and loading of binary will be added later.
 
-
+</br>
+</br>
 
 **2015-10-30**
 
