@@ -1,36 +1,36 @@
-﻿module Helper {
+﻿module Spriter {
 
     export class IdNameMap<T> {
 
         private _items: T[] = [];
-        private _itemNames: number[] = [];
+        private _itemNames: number[] = [];  // keys are names and returned value is index into _tems array
 
         // -------------------------------------------------------------------------
-        public add(aItem: T, aId?: number, aName?: string) {
-            if (aId === undefined) {
-                aId = this._items.length;
+        public add(item: T, id?: number, name?: string) {
+            if (id === undefined) {
+                id = this._items.length;
             }
 
-            if (aName === undefined || aName === null) {
-                aName = "item_" + aId;
+            if (name === undefined || name === null) {
+                name = "item_" + id;
             }
 
-            this._items[aId] = aItem;
-            this._itemNames[aName] = aId;
+            this._items[id] = item;
+            this._itemNames[name] = id;
         }
 
         // -------------------------------------------------------------------------
-        public getById(aId: number): T {
-            return this._items[aId];
+        public getById(id: number): T {
+            return this._items[id];
         }
 
         // -------------------------------------------------------------------------
-        public getByName(aName: string) {
-            var id = this._itemNames[aName];
+        public getByName(name: string) {
+            var id = this._itemNames[name];
 
             // TODO remove
             if (typeof id !== "number") {
-                console.warn("item " + aName + "  not found!");
+                console.warn("item " + name + "  not found!");
             }
 
             return (typeof id === "number") ? this._items[id] : null;

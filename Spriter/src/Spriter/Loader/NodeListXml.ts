@@ -6,9 +6,9 @@
         private _nodeList: NodeList;
 
         // -------------------------------------------------------------------------
-        constructor(aSpriterXml: SpriterXml, aNodeList: NodeList) {
-            this._file = aSpriterXml;
-            this._nodeList = aNodeList;
+        constructor(spriterXmlFile: SpriterXml, nodeList: NodeList) {
+            this._file = spriterXmlFile;
+            this._nodeList = nodeList;
         }
 
         // -------------------------------------------------------------------------
@@ -22,53 +22,125 @@
         }
 
         // -------------------------------------------------------------------------
-        public getChildNodes(aIndex: number, aElementName: string): ISpriterNodeList {
-            return this._file.getNodesForElement(<Element>this._nodeList.item(aIndex), aElementName);
+        public getChildNodes(index: number, elementName: string): ISpriterNodeList {
+            return this._file.getNodesForElement(<Element>this._nodeList.item(index), elementName);
         }
 
         // -------------------------------------------------------------------------
-        public getFolder(aIndex: number): Folder {
-            return this._file.getFolder(<Element>this._nodeList.item(aIndex));
+        public getFolder(index: number): Folder {
+            return this._file.getFolder(<Element>this._nodeList.item(index));
         }
 
         // -------------------------------------------------------------------------
-        public getFile(aIndex: number): File {
-            return this._file.getFile(<Element>this._nodeList.item(aIndex));
+        public getFile(index: number): File {
+            return this._file.getFile(<Element>this._nodeList.item(index));
         }
 
         // -------------------------------------------------------------------------
-        public getEntity(aIndex: number): Entity {
-            return this._file.getEntity(<Element>this._nodeList.item(aIndex));
+        public getTag(index: number): Item {
+            return this._file.getTag(<Element>this._nodeList.item(index));
         }
 
         // -------------------------------------------------------------------------
-        public getObjectInfo(aIndex: number): ObjectInfo {
-            return this._file.getObjectInfo(<Element>this._nodeList.item(aIndex), aIndex);
+        public getEntity(index: number): Entity {
+            return this._file.getEntity(<Element>this._nodeList.item(index));
         }
 
         // -------------------------------------------------------------------------
-        public getAnimation(aIndex: number): Animation {
-            return this._file.getAnimation(<Element>this._nodeList.item(aIndex));
+        public getObjectInfo(index: number): ObjectInfo {
+            return this._file.getObjectInfo(<Element>this._nodeList.item(index), index);
         }
 
         // -------------------------------------------------------------------------
-        public getMainLineKey(aIndex: number): MainLineKey {
-            return this._file.getMainLineKey(<Element>this._nodeList.item(aIndex));
+        public getCharMap(index: number): CharMap {
+            return this._file.getCharMap(<Element>this._nodeList.item(index));
         }
 
         // -------------------------------------------------------------------------
-        public getRef(aIndex: number): Ref {
-            return this._file.getRef(<Element>this._nodeList.item(aIndex));
+        public getCharMapEntry(index: number, charMap: CharMap, spriter: Spriter): void {
+            this._file.getCharMapEntry(<Element>this._nodeList.item(index), charMap, spriter);
         }
 
         // -------------------------------------------------------------------------
-        public getTimeline(aIndex: number): Timeline {
-            return this._file.getTimeline(<Element>this._nodeList.item(aIndex));
+        public getVariable(index: number): Variable {
+            return this._file.getVariable(<Element>this._nodeList.item(index));
         }
 
         // -------------------------------------------------------------------------
-        public getTimelineKey(aIndex: number, aSpriter: Spriter): TimelineKey {
-            return this._file.getTimelineKey(<Element>this._nodeList.item(aIndex), aIndex, aSpriter);
+        public getAnimation(index: number): Animation {
+            return this._file.getAnimation(<Element>this._nodeList.item(index));
+        }
+        
+        // -------------------------------------------------------------------------
+        public getMainline(index: number): Baseline {
+            return this._file.getBaseline(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getMainlineKey(index: number): KeyMainline {
+            return this._file.getMainlineKey(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getRef(index: number): Ref {
+            return this._file.getRef(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getTimeline(index: number): Timeline {
+            return this._file.getTimeline(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getSoundline(index: number): Baseline {
+            return this._file.getBaseline(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getEventline(index: number): Baseline {
+            return this._file.getBaseline(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getTagline(index: number): Baseline {
+            return this._file.getBaseline(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getVarline(index: number): Varline {
+            return this._file.getVarline(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getKey(index: number): Key {
+            return this._file.getKey(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getTagKey(index: number): KeyTag {
+            return this._file.getTagKey(<Element>this._nodeList.item(index));
+        }
+
+        // -------------------------------------------------------------------------
+        public getVariableKey(index: number, type: eVariableType): KeyVariable {
+            return this._file.getVariableKey(<Element>this._nodeList.item(index), type);
+        }
+
+        // -------------------------------------------------------------------------
+        public getTimelineKey(index: number, spriter: Spriter): KeyTimeline {
+            return this._file.getTimelineKey(<Element>this._nodeList.item(index), index, spriter);
+        }
+
+        // -------------------------------------------------------------------------
+        public getTagChanges(spriter: Spriter): number {
+            var tags = 0;
+
+            for (var i = 0; i < this.length(); i++) {
+                var tagIndex = this._file.getTagChange(<Element>this._nodeList.item(i));
+                tags |= (1 << tagIndex);
+            }
+
+            return tags;
         }
     }
 }

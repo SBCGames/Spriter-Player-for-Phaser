@@ -1,15 +1,16 @@
-﻿/// <reference path="SpatialTimelineKey.ts" />
+﻿/// <reference path="KeyTimeline.ts" />
+
 module Spriter {
 
-    export class ObjectTimelineKey extends SpatialTimelineKey {
+    export class KeyObject extends KeyTimeline {
 
         private _folder: number;
         private _file: number;
 
         // -------------------------------------------------------------------------
-        public setFolderAndFile(aFolder: number, aFile: number): void {
-            this._folder = aFolder;
-            this._file = aFile;
+        public setFolderAndFile(folder: number, file: number): void {
+            this._folder = folder;
+            this._file = file;
         }
 
         // -------------------------------------------------------------------------

@@ -1,10 +1,6 @@
 ﻿module Spriter {
 
-    export class TimelineKey {
-
-        protected _id: number;
-
-        protected _time: number;
+    export class KeyTimeline extends Key {
 
         protected _spin: number;
 
@@ -14,33 +10,24 @@
         protected _c3: number;
         protected _c4: number;
 
-        // -------------------------------------------------------------------------
-        constructor(aId: number, aTime: number, aSpin: number) {
+        protected _info: SpatialInfo = new SpatialInfo();
 
-            this._id = aId;
-            this._time = aTime;
-            this._spin = aSpin;
+        // -------------------------------------------------------------------------
+        constructor(id: number, time: number, spin: number) {
+            super(id, time);
+
+            this._spin = spin;
 
             this.setCurve(eCurveType.LINEAR);
         }
 
         // -------------------------------------------------------------------------
-        public setCurve(aCurveType: eCurveType, aC1: number = 0, aC2: number = 0, aC3: number = 0, aC4: number = 0): void {
-            this._curveType = aCurveType;
-            this._c1 = aC1;
-            this._c2 = aC2;
-            this._c3 = aC3;
-            this._c4 = aC4;
-        }
-
-        // -------------------------------------------------------------------------
-        public get id(): number {
-            return this._id;
-        }
-
-        // -------------------------------------------------------------------------
-        public get time(): number {
-            return this._time;
+        public setCurve(curveType: eCurveType, c1: number = 0, c2: number = 0, c3: number = 0, c4: number = 0): void {
+            this._curveType = curveType;
+            this._c1 = c1;
+            this._c2 = c2;
+            this._c3 = c3;
+            this._c4 = c4;
         }
 
         // -------------------------------------------------------------------------
@@ -71,6 +58,11 @@
         // -------------------------------------------------------------------------
         public get c4(): number {
             return this._c4;
+        }
+
+        // -------------------------------------------------------------------------
+        public get info(): SpatialInfo {
+            return this._info;
         }
     }
 }

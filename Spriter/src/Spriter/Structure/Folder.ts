@@ -1,43 +1,32 @@
-﻿module Spriter {
+﻿/// <reference path="../IdNameMap.ts" />
+/// <reference path="Item.ts" />
 
-    export class Folder {
+module Spriter {
 
-        private _id: number;
-        private _name: string;
+    export class Folder extends Item {
 
-        private _files: Helper.IdNameMap<File>;
+        private _files: IdNameMap<File>;
 
         // -------------------------------------------------------------------------
-        constructor(aId: number, aName: string) {
-            this._id = aId;
-            this._name = aName;
+        constructor(id: number, name: string) {
+            super(id, name);
 
-            this._files = new Helper.IdNameMap<File>();
+            this._files = new IdNameMap<File>();
         }
 
         // -------------------------------------------------------------------------
-        public addFile(aFile: File): void {
-            this._files.add(aFile, aFile.id, aFile.name);
+        public addFile(file: File): void {
+            this._files.add(file, file.id, file.name);
         }
 
         // -------------------------------------------------------------------------
-        public getFileById(aId: number): File {
-            return this._files.getById(aId);
+        public getFileById(id: number): File {
+            return this._files.getById(id);
         }
 
         // -------------------------------------------------------------------------
-        public getFileByName(aName: string) {
-            return this._files.getByName(aName);
-        }
-
-        // -------------------------------------------------------------------------
-        public get id(): number {
-            return this._id;
-        }
-
-        // -------------------------------------------------------------------------
-        public get name(): string {
-            return this._name;
+        public getFileByName(name: string) {
+            return this._files.getByName(name);
         }
     }
 }

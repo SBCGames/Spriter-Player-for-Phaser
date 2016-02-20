@@ -9,12 +9,12 @@
         public z: number;
 
         // -------------------------------------------------------------------------
-        constructor(aId: number, aParent: number, aTimeline: number, aKey: number, aZ: number = 0) {
-            this.id = aId;
-            this.parent = aParent;
-            this.timeline = aTimeline;
-            this.key = aKey;
-            this.z = aZ;
+        constructor(id: number, parent: number, timeline: number, key: number, z: number = 0) {
+            this.id = id;
+            this.parent = parent;
+            this.timeline = timeline;
+            this.key = key;
+            this.z = z;
         }
     }
 }

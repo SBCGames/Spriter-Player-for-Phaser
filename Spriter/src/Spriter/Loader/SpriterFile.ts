@@ -7,7 +7,7 @@
         private _minDefsStack: any[];
 
         // -------------------------------------------------------------------------
-        public abstract getNodes(aNodeName: string): ISpriterNodeList;
+        public abstract getNodes(nodeName: string): ISpriterNodeList;
 
         // -------------------------------------------------------------------------
         public processed(): void {
@@ -15,14 +15,14 @@
         }
 
         // -------------------------------------------------------------------------
-        protected setMinimized(aMinimized: boolean, aMinDefs: any = null) {
-            this._minimized = aMinimized;
-            this._minDefs = aMinDefs;
+        protected setMinimized(minimized: boolean, minDefs: any = null) {
+            this._minimized = minimized;
+            this._minDefs = minDefs;
 
-            if (aMinimized) {
+            if (minimized) {
                 this._minDefsStack = [];
 
-                if (aMinDefs === null) {
+                if (minDefs === null) {
                     console.error("Spriter file is minimized - you must provide object with name definitions");
                     return;
                 }
@@ -30,56 +30,56 @@
         }
 
         // -------------------------------------------------------------------------
-        protected getFileNameWithoutExtension(aPath: string): string {
-            var name = (aPath.split('\\').pop().split('/').pop().split('.'))[0];
+        protected getFileNameWithoutExtension(path: string): string {
+            var name = (path.split('\\').pop().split('/').pop().split('.'))[0];
             return name;
         }
 
         // -------------------------------------------------------------------------
-        protected translateElementName(aElementName: string): string {
+        protected translateElementName(elementName: string): string {
             if (this._minimized) {
-                if (this._minDefs["name"] !== aElementName) {
+                if (this._minDefs["name"] !== elementName) {
                     console.warn("current definition is " + this._minDefs["name"]);
-                    return aElementName;
+                    return elementName;
                 }
 
                 if (this._minDefs["minName"] !== null) {
-                    aElementName = this._minDefs["minName"];
+                    elementName = this._minDefs["minName"];
                 }
             }
 
-            return aElementName;
+            return elementName;
         }
 
         // -------------------------------------------------------------------------
-        protected translateChildElementName(aElementName: string): string {
+        protected translateChildElementName(elementName: string): string {
             if (this._minimized && this._minDefs !== null) {
                 var elements = this._minDefs["childElements"];
                 if (elements !== null) {
-                    aElementName = elements[aElementName] === null ? aElementName : elements[aElementName]["minName"];
+                    elementName = elements[elementName] === null ? elementName : elements[elementName]["minName"];
                 }
             }
-            return aElementName;
+            return elementName;
         }
 
         // -------------------------------------------------------------------------
-        protected translateAttributeName(aAttributeName: string): string {
+        protected translateAttributeName(attributeName: string): string {
             if (this._minimized && this._minDefs !== null) {
                 var attributes = this._minDefs["attributes"];
                 if (attributes !== null) {
-                    aAttributeName = attributes[aAttributeName] === null ? aAttributeName : attributes[aAttributeName];
+                    attributeName = attributes[attributeName] === null ? attributeName : attributes[attributeName];
                 }
             }
-            return aAttributeName;
+            return attributeName;
         }
 
         // -------------------------------------------------------------------------
-        protected setMinDefsToElementName(aTagName: string): void {
+        protected setMinDefsToElementName(tagName: string): void {
             if (this._minimized) {
                 // save current level of min defs
                 this._minDefsStack.push(this._minDefs);
                 // get child definition and set it as current
-                var minDef = this._minDefs["childElements"][aTagName];
+                var minDef = this._minDefs["childElements"][tagName];
                 this._minDefs = minDef;
             }
         }

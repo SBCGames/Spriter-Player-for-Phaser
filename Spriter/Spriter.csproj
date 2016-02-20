@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -30,7 +30,7 @@
     <TypeScriptCompile Include="lib\p2.d.ts" />
     <TypeScriptCompile Include="lib\phaser.d.ts" />
     <TypeScriptCompile Include="lib\pixi.d.ts" />
-    <TypeScriptCompile Include="src\Helpers\IdNameMap.ts" />
+    <TypeScriptCompile Include="src\Spriter\IdNameMap.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\ISpriterNodeList.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\NodeListBin.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\NodeListJSON.ts" />
@@ -39,22 +39,29 @@
     <TypeScriptCompile Include="src\Spriter\Loader\SpriterBin.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\SpriterJSON.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\SpriterXml.ts" />
-    <TypeScriptCompile Include="src\Spriter\SpriterGroupListener.ts" />
     <TypeScriptCompile Include="src\Spriter\Structure\Animation.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\CurveType.ts" />
     <TypeScriptCompile Include="src\Spriter\Structure\Entity.ts" />
     <TypeScriptCompile Include="src\Spriter\Structure\File.ts" />
     <TypeScriptCompile Include="src\Spriter\Structure\Folder.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\MainLineKey.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\CharMap.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\CharMapStack.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\Item.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\Key.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\KeyMainline.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\KeyTag.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\KeyVariable.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\Baseline.ts" />
+    <TypeScriptCompile Include="src\Spriter\Math.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\Variable.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\Varline.ts" />
     <TypeScriptCompile Include="src\Spriter\Structure\ObjectInfo.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\ObjectType.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\Types.ts" />
     <TypeScriptCompile Include="src\Spriter\Structure\Ref.ts" />
     <TypeScriptCompile Include="src\Spriter\Structure\Timeline.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\TimelineKey.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\KeyTimeline.ts" />
     <TypeScriptCompile Include="src\Spriter\Structure\SpatialInfo.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\SpatialTimelineKey.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\ObjectTimelineKey.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\BoneTimelineKey.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\KeyObject.ts" />
+    <TypeScriptCompile Include="src\Spriter\Structure\KeyBone.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\Loader.ts" />
     <TypeScriptCompile Include="src\Spriter\Spriter.ts" />
     <TypeScriptCompile Include="src\Spriter\SpriterBone.ts" />

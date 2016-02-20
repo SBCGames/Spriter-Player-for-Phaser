@@ -13,10 +13,14 @@
 
         private _on: boolean;
 
+        public name: string;
+        public objectInfo: ObjectInfo;
+
         public parent: number;
 
+        public timeline: number = -1;
         public timelineKey: number = -1;
-        public key: SpatialTimelineKey;
+        public key: KeyTimeline;
 
         public timeFrom: number;
         public timeTo: number;
@@ -27,14 +31,16 @@
 
         public updateMask: number;
 
+        public type: eObjectType;
+
         // -------------------------------------------------------------------------
         constructor() {
             this.transformed = new SpatialInfo();
         }
 
         // -------------------------------------------------------------------------
-        public setOn(aOn: boolean): void {
-            this._on = aOn;
+        public setOn(on: boolean): void {
+            this._on = on;
         }
 
         // -------------------------------------------------------------------------
@@ -43,18 +49,17 @@
         }
 
         // -------------------------------------------------------------------------
-        public setKey(aAnimation: Animation, aTimelineId: number, aKeyId: number): void {
-            this.timelineKey = aKeyId;
+        public setKey(entity: Entity, animation: Animation, timelineId: number, keyId: number): void {
+            this.timeline = timelineId;
+            this.timelineKey = keyId;
 
-            var keys = aAnimation.getTimelineById(aTimelineId).keys;
+            var timeline = animation.getTimelineById(timelineId);
+            this.name = timeline.name;
+            this.objectInfo = (timeline.objectRef === -1) ? null : entity.getObjectInfoById(timeline.objectRef);
 
-            var keyFrom = <SpatialTimelineKey> keys[aKeyId];
+            var keyFrom = <KeyTimeline>timeline.at(keyId);
             // in the end loop to first key. If animation is not looping, then repeat last key
-            var endIndex = (aKeyId + 1) % keys.length;
-            if (endIndex === 0 && aAnimation.loopType === eAnimationLooping.NO_LOOPING) {
-                endIndex = aKeyId;
-            }
-            var keyTo = <SpatialTimelineKey> keys[endIndex];
+            var keyTo = <KeyTimeline>(timeline.at(keyId + 1, animation.loopType !== eAnimationLooping.NO_LOOPING));
 
             this.key = keyFrom;
             this.timeFrom = keyFrom.time;
@@ -62,7 +67,7 @@
 
             // if loop to key 0
             if (this.timeTo < this.timeFrom) {
-                this.timeTo = aAnimation.length;
+                this.timeTo = animation.length;
             }
 
             this.from = keyFrom.info;
@@ -107,61 +112,61 @@
         }
 
         // -------------------------------------------------------------------------
-        public tween(aTime: number): void {
+        public tween(time: number): void {
             // calculate normalized time
-            //var t = Phaser.Math.clamp((aTime - this.timeFrom) / (this.timeTo - this.timeFrom), 0, 1);
-            var t = (this.updateMask > 0) ? this.getTweenTime(aTime) : 0;
+            //var t = Phaser.Math.clamp((time - this.timeFrom) / (this.timeTo - this.timeFrom), 0, 1);
+            var t = (this.updateMask > 0) ? this.getTweenTime(time) : 0;
 
             this.transformed.x = (this.updateMask & SpriterBone.UPDATE_X) > 0 ?
-                this.linear(this.from.x, this.to.x, t) : this.from.x;
+                linear(this.from.x, this.to.x, t) : this.from.x;
             this.transformed.y = (this.updateMask & SpriterBone.UPDATE_Y) > 0 ?
-                this.linear(this.from.y, this.to.y, t) : this.from.y;
+                linear(this.from.y, this.to.y, t) : this.from.y;
 
             this.transformed.scaleX = (this.updateMask & SpriterBone.UPDATE_SCALE_X) > 0 ?
-                this.linear(this.from.scaleX, this.to.scaleX, t) : this.from.scaleX;
+                linear(this.from.scaleX, this.to.scaleX, t) : this.from.scaleX;
             this.transformed.scaleY = (this.updateMask & SpriterBone.UPDATE_SCALE_Y) > 0 ?
-                this.linear(this.from.scaleY, this.to.scaleY, t) : this.from.scaleY;
+                linear(this.from.scaleY, this.to.scaleY, t) : this.from.scaleY;
 
             this.transformed.pivotX = (this.updateMask & SpriterBone.UPDATE_PIVOT_X) > 0 ?
-                this.linear(this.from.pivotX, this.to.pivotX, t) : this.from.pivotX;
+                linear(this.from.pivotX, this.to.pivotX, t) : this.from.pivotX;
             this.transformed.pivotY = (this.updateMask & SpriterBone.UPDATE_PIVOT_Y) > 0 ?
-                this.linear(this.from.pivotY, this.to.pivotY, t) : this.from.pivotY;
+                linear(this.from.pivotY, this.to.pivotY, t) : this.from.pivotY;
 
             this.transformed.alpha = (this.updateMask & SpriterBone.UPDATE_ALPHA) > 0 ?
-                this.linear(this.from.alpha, this.to.alpha, t) : this.from.alpha;
+                linear(this.from.alpha, this.to.alpha, t) : this.from.alpha;
 
             this.transformed.angle = (this.updateMask & SpriterBone.UPDATE_ANGLE) > 0 ?
-                this.angleLinear(this.from.angle, this.to.angle, this.key.spin, t) : this.from.angle;
+                angleLinear(this.from.angle, this.to.angle, this.key.spin, t) : this.from.angle;
         }
 
         // -------------------------------------------------------------------------
-        public update(aParent: SpatialInfo): void {
-            this.transformed.angle *= Phaser.Math.sign(aParent.scaleX) * Phaser.Math.sign(aParent.scaleY);
-            this.transformed.angle += aParent.angle;
+        public update(parent: SpatialInfo): void {
+            this.transformed.angle *= Phaser.Math.sign(parent.scaleX) * Phaser.Math.sign(parent.scaleY);
+            this.transformed.angle += parent.angle;
 
-            this.transformed.scaleX *= aParent.scaleX;
-            this.transformed.scaleY *= aParent.scaleY;
+            this.transformed.scaleX *= parent.scaleX;
+            this.transformed.scaleY *= parent.scaleY;
 
-            this.scalePosition(aParent.scaleX, aParent.scaleY);
-            this.rotatePosition(aParent.angle);
-            this.translatePosition(aParent.x, aParent.y);
+            this.scalePosition(parent.scaleX, parent.scaleY);
+            this.rotatePosition(parent.angle);
+            this.translatePosition(parent.x, parent.y);
 
-            this.transformed.alpha *= aParent.alpha;
+            this.transformed.alpha *= parent.alpha;
         }
 
         // -------------------------------------------------------------------------
-        private scalePosition(aParentScaleX: number, aParentScaleY: number): void {
-            this.transformed.x *= aParentScaleX;
-            this.transformed.y *= aParentScaleY;
+        private scalePosition(parentScaleX: number, parentScaleY: number): void {
+            this.transformed.x *= parentScaleX;
+            this.transformed.y *= parentScaleY;
         }
 
         // -------------------------------------------------------------------------
-        private rotatePosition(aParentAngle: number): void {
+        private rotatePosition(parentAngle: number): void {
             var x = this.transformed.x;
             var y = this.transformed.y
 
             if (x !== 0 || y !== 0) {
-                var rads = aParentAngle * (Math.PI / 180);
+                var rads = parentAngle * (Math.PI / 180);
 
                 var cos = Math.cos(rads);
                 var sin = Math.sin(rads);
@@ -172,67 +177,31 @@
         }
 
         // -------------------------------------------------------------------------
-        private translatePosition(aParentX: number, aParentY: number): void {
-            this.transformed.x += aParentX;
-            this.transformed.y += aParentY;
+        private translatePosition(parentX: number, parentY: number): void {
+            this.transformed.x += parentX;
+            this.transformed.y += parentY;
         }
 
         // -------------------------------------------------------------------------
-        private getTweenTime(aTime: number): number {
+        private getTweenTime(time: number): number {
             if (this.key.curveType === eCurveType.INSTANT) {
                 return 0;
             }
 
-            var t = Phaser.Math.clamp((aTime - this.timeFrom) / (this.timeTo - this.timeFrom), 0, 1);
+            var t = Phaser.Math.clamp((time - this.timeFrom) / (this.timeTo - this.timeFrom), 0, 1);
 
             switch (this.key.curveType) {
                 case eCurveType.LINEAR:
                     return t;
 
                 case eCurveType.QUADRATIC:
-                    return this.quadratic(0, this.key.c1, 1, t);
+                    return quadratic(0, this.key.c1, 1, t);
 
                 case eCurveType.CUBIC:
-                    return this.cubic(0, this.key.c1, this.key.c2, 1, t);
+                    return cubic(0, this.key.c1, this.key.c2, 1, t);
             }
 
             return 0;
-        }
-        
-        // -------------------------------------------------------------------------
-        private linear(aA: number, aB: number, aT: number): number {
-            return ((aB - aA) * aT) + aA;
-        }
-
-        // -------------------------------------------------------------------------
-        private quadratic(aA: number, aB: number, aC: number, aT: number) {
-            return this.linear(this.linear(aA, aB, aT), this.linear(aB, aC, aT), aT);
-        }
-
-        // -------------------------------------------------------------------------
-        private cubic(aA: number, aB: number, aC: number, aD: number, aT:number) {
-            return this.linear(this.quadratic(aA, aB, aC, aT), this.quadratic(aB, aC, aD, aT), aT);
-        }
-
-        // -------------------------------------------------------------------------
-        private angleLinear(aAngleA: number, aAngleB: number, aSpin: number, aT: number): number {
-            // no spin
-            if (aSpin === 0) {
-                return aAngleA;
-            }
-
-            // spin left
-            if (aSpin > 0) {
-                if (aAngleB > aAngleA) {
-                    aAngleB -= 360;
-                }
-            } else {    // spin right
-                if (aAngleB < aAngleA) {
-                    aAngleB += 360;
-                }
-            }
-
-            return this.linear(aAngleA, aAngleB, aT);
         }
     }
 }

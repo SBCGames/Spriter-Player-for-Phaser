@@ -6,7 +6,7 @@
 
         // game size
         static GAME_WIDTH: number = 640;
-        static GAME_HEIGHT: number = 400;
+        static GAME_HEIGHT: number = 640;
 
         // assets path
         static assetsPath: string = "assets/";

@@ -1,10 +1,9 @@
-﻿/// <reference path="../../lib/phaser.d.ts" />
-/// <reference path="../Spriter/Loader/SpriterJSON.ts"/>
-module SpriterExample {
+﻿module SpriterExample {
 
     export class Test extends Phaser.State {
 
-        public spriterGroup: Spriter.SpriterGroup;
+        private _spriterGroup: Spriter.SpriterGroup;
+        private _text: string = "";
 
         // -------------------------------------------------------------------------
         constructor() {
@@ -13,37 +12,71 @@ module SpriterExample {
 
         // -------------------------------------------------------------------------
         create() {
-            this.stage.backgroundColor = 0x00DFFF;
+            this.stage.backgroundColor = 0x527F68;
+
+            //var spriterLoader = new Spriter.Loader();
+            //var spriterFile = new Spriter.SpriterXml(this.cache.getXML("HeroDataXml") /*, this.minimizedDefinitions*/);
+            ////var spriterFile = new Spriter.SpriterJSON(this.cache.getJSON("HeroDataJSON"), this.minimizedDefinitions);
+            ////var spriterFile = new Spriter.SpriterBin(this.cache.getBinary("HeroDataBin"));
+            //var spriterData = spriterLoader.load(spriterFile);
+
+
+            //this.spriterGroup = new Spriter.SpriterGroup(this.game, spriterData, "Hero", "Player", 0, 100);
+            //this.spriterGroup.position.setTo(320, 350);
+
+
 
             var spriterLoader = new Spriter.Loader();
-            //var spriterFile = new Spriter.SpriterXml(this.cache.getXML("HeroDataXml"), this.minimizedDefinitions);
-            //var spriterFile = new Spriter.SpriterJSON(this.cache.getJSON("HeroDataJSON"), this.minimizedDefinitions);
-            var spriterFile = new Spriter.SpriterBin(this.cache.getBinary("HeroDataBin"));
+            var spriterFile = new Spriter.SpriterXml(this.cache.getXML("TESTXml"));
             var spriterData = spriterLoader.load(spriterFile);
 
+            this._spriterGroup = new Spriter.SpriterGroup(this.game, spriterData, "TEST", "Hero", 0, 100);
+            this._spriterGroup.position.setTo(420, 400);
 
-            this.spriterGroup = new Spriter.SpriterGroup(this.game, spriterData, "Hero", "Player", 0, 100);
-            this.spriterGroup.position.setTo(320, 350);
+            this._spriterGroup.onVariableSet.add(function (spriter: Spriter.SpriterGroup, variable: Spriter.Variable) {
+                this._text = variable.string;
+            }, this);
 
-            this.world.add(this.spriterGroup);
+
+
+            this.world.add(this._spriterGroup);
+
 
             // cycle animations
             var animation = 0;
             var key = this.game.input.keyboard.addKey(Phaser.Keyboard.A);
             key.onDown.add(function () {
-                animation = (animation + 1) % this.spriterGroup.animationCount;
-                this.spriterGroup.setAnimationById(animation);                
+                animation = (animation + 1) % this._spriterGroup.animationsCount;
+                this._spriterGroup.playAnimationById(animation);                
+            }, this);
+
+            
+            // change char maps
+            var charMaps = ["Green", "Brush"];
+            var charmapID = 0;
+            
+            key = this.game.input.keyboard.addKey(Phaser.Keyboard.C);
+            key.onDown.add(function () {
+                if (charmapID >= this._spriterGroup.entity.charMapsLength) {
+                    this._spriterGroup.clearCharMaps();
+                    charmapID = 0;
+                } else {
+                    this._spriterGroup.pushCharMap(charMaps[charmapID]);
+                    ++charmapID;
+                }
             }, this);
         }
 
         // -------------------------------------------------------------------------
         update() {
-            this.spriterGroup.updateAnimation();
+            this._spriterGroup.updateAnimation();
         }
 
         // -------------------------------------------------------------------------
         render() {
-            this.game.debug.text(" Playing animation: " + this.spriterGroup.currentAnimationName + " (Press A to next...)", 50, 30, "rgb(0, 0, 0)");
+            this.game.debug.text("Playing animation: " + this._spriterGroup.currentAnimationName + " (Press A to next...)", 50, 30, "rgb(255, 255, 255)");
+            this.game.debug.text("Press C to cycle charmaps", 50, 46, "rgb(255, 255, 255)");
+            this.game.debug.text(this._text, 180, 232, "rgb(255, 255, 255)");
         }
 
         // -------------------------------------------------------------------------
