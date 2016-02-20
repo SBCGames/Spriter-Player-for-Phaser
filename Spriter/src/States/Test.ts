@@ -50,7 +50,6 @@
                 animation = (animation + 1) % this._spriterGroup.animationsCount;
                 this._spriterGroup.playAnimationById(animation);                
             }, this);
-
             
             // change char maps
             var charMaps = ["Green", "Brush"];
