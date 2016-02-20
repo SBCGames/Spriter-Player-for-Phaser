@@ -135,6 +135,11 @@ module Spriter {
         }
 
         // -------------------------------------------------------------------------
+        public getType(): eFileType {
+            return eFileType.BIN;
+        }
+
+        // -------------------------------------------------------------------------
         private readUint8(): number {
             return this._bin.getUint8(this._tmpPosition++);
         }

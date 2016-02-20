@@ -1,5 +1,7 @@
 ﻿module Spriter {
 
+    export enum eFileType { XML, JSON, BIN }
+
     export abstract class SpriterFile {
 
         protected _minimized: boolean;
@@ -8,6 +10,9 @@
 
         // -------------------------------------------------------------------------
         public abstract getNodes(nodeName: string): ISpriterNodeList;
+
+        // -------------------------------------------------------------------------
+        public abstract getType(): eFileType;
 
         // -------------------------------------------------------------------------
         public processed(): void {

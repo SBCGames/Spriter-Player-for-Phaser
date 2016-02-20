@@ -20,8 +20,9 @@
 
 
             // test
-            this.load.atlas("TEST", path + "TEST.png", path + "TEST.json");
+            this.load.atlas("TEST", path + "Atlas.png", path + "Atlas.json");
             this.load.xml("TESTXml", path + "TEST.xml");
+            this.load.json("TESTJson", path + "TEST.json");
         }
 
         // -------------------------------------------------------------------------

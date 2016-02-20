@@ -9,6 +9,10 @@
         constructor(spriterJSONFile: SpriterJSON, nodeList: any) {
             this._file = spriterJSONFile;
             this._nodeList = nodeList;
+
+            if (!Array.isArray(nodeList)) {
+                nodeList.length = 1;
+            }
         }
 
         // -------------------------------------------------------------------------

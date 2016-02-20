@@ -17,6 +17,11 @@ module Spriter {
         }
 
         // -------------------------------------------------------------------------
+        public getType(): eFileType {
+            return eFileType.XML;
+        }
+
+        // -------------------------------------------------------------------------
         private parseInt(element: Element, attributeName: string, defaultValue: number = 0): number {
             var value = element.getAttribute(this.translateAttributeName(attributeName));
             return value !== null ? parseInt(value) : defaultValue;

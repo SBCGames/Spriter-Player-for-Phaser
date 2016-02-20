@@ -17,6 +17,11 @@ module Spriter {
         }
 
         // -------------------------------------------------------------------------
+        public getType(): eFileType {
+            return eFileType.JSON;
+        }
+
+        // -------------------------------------------------------------------------
         private parseInt(element: any, attributeName: string, defaultValue: number = 0): number {
             var value = element[this.translateAttributeName(attributeName)];
             if (value === undefined) {
@@ -57,7 +62,7 @@ module Spriter {
             this.setMinDefsToElementName(nodeName);
             var translatedName = this.translateElementName(nodeName);
 
-            return new NodeListJSON(this, this._json[translatedName]);
+            return new NodeListJSON(this, (this._json[translatedName] !== undefined) ? this._json[translatedName] : []);
         }
 
         // -------------------------------------------------------------------------
@@ -65,7 +70,7 @@ module Spriter {
             this.setMinDefsToElementName(nodeName);
             var translatedName = this.translateElementName(nodeName);
 
-            return new NodeListJSON(this, element[translatedName]);
+            return new NodeListJSON(this, (element[translatedName] !== undefined) ? element[translatedName] : []);
         }
 
         // -------------------------------------------------------------------------
@@ -77,7 +82,9 @@ module Spriter {
 
         // -------------------------------------------------------------------------
         public getFile(element: any): File {
-            console.error("skip sounds loading...");
+            if (element["type"] !== undefined && element["type"] === "sound") {
+                return null;
+            }
 
             return new File(
                 this.parseInt(element, "id"),
@@ -124,7 +131,7 @@ module Spriter {
                 getFileById(this.parseInt(element, "file")).name;
 
             var target: File = null;
-            if (element.hasAttribute("target_folder") && element.hasAttribute("target_file")) {
+            if (element["target_folder"] !== undefined && element["target_file"] !== undefined) {
                 target = spriter.getFolderById(this.parseInt(element, "target_folder")).
                     getFileById(this.parseInt(element, "target_file"));
             }

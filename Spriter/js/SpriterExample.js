@@ -165,6 +165,9 @@ var Spriter;
         function NodeListJSON(spriterJSONFile, nodeList) {
             this._file = spriterJSONFile;
             this._nodeList = nodeList;
+            if (!Array.isArray(nodeList)) {
+                nodeList.length = 1;
+            }
         }
         // -------------------------------------------------------------------------
         NodeListJSON.prototype.length = function () {
@@ -403,6 +406,12 @@ var Spriter;
 })(Spriter || (Spriter = {}));
 var Spriter;
 (function (Spriter) {
+    (function (eFileType) {
+        eFileType[eFileType["XML"] = 0] = "XML";
+        eFileType[eFileType["JSON"] = 1] = "JSON";
+        eFileType[eFileType["BIN"] = 2] = "BIN";
+    })(Spriter.eFileType || (Spriter.eFileType = {}));
+    var eFileType = Spriter.eFileType;
     var SpriterFile = (function () {
         function SpriterFile() {
         }
@@ -515,6 +524,10 @@ var Spriter;
             this._bin = new DataView(binData);
             this._smallOffset = this._bin.getUint8(0) === 1;
         }
+        // -------------------------------------------------------------------------
+        SpriterBin.prototype.getType = function () {
+            return Spriter.eFileType.BIN;
+        };
         // -------------------------------------------------------------------------
         SpriterBin.prototype.readUint8 = function () {
             return this._bin.getUint8(this._tmpPosition++);
@@ -1087,6 +1100,10 @@ var Spriter;
             this.setMinimized(minimized, minDefs);
         }
         // -------------------------------------------------------------------------
+        SpriterJSON.prototype.getType = function () {
+            return Spriter.eFileType.JSON;
+        };
+        // -------------------------------------------------------------------------
         SpriterJSON.prototype.parseInt = function (element, attributeName, defaultValue) {
             if (defaultValue === void 0) { defaultValue = 0; }
             var value = element[this.translateAttributeName(attributeName)];
@@ -1123,13 +1140,13 @@ var Spriter;
         SpriterJSON.prototype.getNodes = function (nodeName) {
             this.setMinDefsToElementName(nodeName);
             var translatedName = this.translateElementName(nodeName);
-            return new Spriter.NodeListJSON(this, this._json[translatedName]);
+            return new Spriter.NodeListJSON(this, (this._json[translatedName] !== undefined) ? this._json[translatedName] : []);
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getNodesForElement = function (element, nodeName) {
             this.setMinDefsToElementName(nodeName);
             var translatedName = this.translateElementName(nodeName);
-            return new Spriter.NodeListJSON(this, element[translatedName]);
+            return new Spriter.NodeListJSON(this, (element[translatedName] !== undefined) ? element[translatedName] : []);
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getFolder = function (element) {
@@ -1137,7 +1154,9 @@ var Spriter;
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getFile = function (element) {
-            console.error("skip sounds loading...");
+            if (element["type"] !== undefined && element["type"] === "sound") {
+                return null;
+            }
             return new Spriter.File(this.parseInt(element, "id"), this.getFileNameWithoutExtension(this.parseString(element, "name")), this.parseFloat(element, "pivot_x"), 1 - this.parseFloat(element, "pivot_y"));
         };
         // -------------------------------------------------------------------------
@@ -1162,7 +1181,7 @@ var Spriter;
             var sourceName = spriter.getFolderById(this.parseInt(element, "folder")).
                 getFileById(this.parseInt(element, "file")).name;
             var target = null;
-            if (element.hasAttribute("target_folder") && element.hasAttribute("target_file")) {
+            if (element["target_folder"] !== undefined && element["target_file"] !== undefined) {
                 target = spriter.getFolderById(this.parseInt(element, "target_folder")).
                     getFileById(this.parseInt(element, "target_file"));
             }
@@ -1283,6 +1302,10 @@ var Spriter;
             var minimized = xmlData.documentElement.hasAttribute("min");
             this.setMinimized(minimized, minDefs);
         }
+        // -------------------------------------------------------------------------
+        SpriterXml.prototype.getType = function () {
+            return Spriter.eFileType.XML;
+        };
         // -------------------------------------------------------------------------
         SpriterXml.prototype.parseInt = function (element, attributeName, defaultValue) {
             if (defaultValue === void 0) { defaultValue = 0; }
@@ -2505,6 +2528,7 @@ var Spriter;
         // -------------------------------------------------------------------------
         Loader.prototype.load = function (file) {
             this._spriter = new Spriter.Spriter();
+            this._fileType = file.getType();
             // folders and files
             var folders = file.getNodes("folder");
             this.loadFolders(this._spriter, folders);
@@ -2607,12 +2631,22 @@ var Spriter;
             if (variables.length() === 0) {
                 return;
             }
-            var varDefs = variables.getChildNodes(0, "i");
+            // different structure for json than for xml
+            var varDefs;
+            if (this._fileType !== Spriter.eFileType.JSON) {
+                varDefs = variables.getChildNodes(0, "i");
+            }
+            else {
+                varDefs = variables;
+            }
             for (var i = 0; i < varDefs.length(); i++) {
                 var varDef = varDefs.getVariable(i);
                 entity.addVariable(varDef);
             }
-            varDefs.processed();
+            // different structure for json than for xml
+            if (this._fileType !== Spriter.eFileType.JSON) {
+                varDefs.processed();
+            }
         };
         // -------------------------------------------------------------------------
         Loader.prototype.loadAnimations = function (entity, animations) {
@@ -2638,7 +2672,8 @@ var Spriter;
                 var meta = animations.getChildNodes(i, "meta");
                 if (meta.length() > 0) {
                     // var lines
-                    var varlines = meta.getChildNodes(0, "varline");
+                    // OMG - typo in attribute name in JSOUN export... what the hell! TODO - remove when corrected
+                    var varlines = meta.getChildNodes(0, (this._fileType !== Spriter.eFileType.JSON) ? "varline" : "valline");
                     this.loadVarlines(entity, animation, varlines);
                     varlines.processed();
                     // tag lines
@@ -2680,20 +2715,20 @@ var Spriter;
             }
         };
         // -------------------------------------------------------------------------
-        Loader.prototype.loadTimelines = function (animation, timelines) {
-            for (var i = 0; i < timelines.length(); i++) {
-                var timeline = timelines.getTimeline(i);
-                var keys = timelines.getChildNodes(i, "key");
+        Loader.prototype.loadTimelines = function (animation, aTimelines) {
+            for (var i = 0; i < aTimelines.length(); i++) {
+                var timeline = aTimelines.getTimeline(i);
+                var keys = aTimelines.getChildNodes(i, "key");
                 this.loadTimelineKeys(timeline, keys);
                 keys.processed();
                 animation.addTimeline(timeline);
             }
         };
         // -------------------------------------------------------------------------
-        Loader.prototype.loadTimelineKeys = function (timeline, keys) {
-            for (var i = 0; i < keys.length(); i++) {
-                var key = keys.getTimelineKey(i, this._spriter);
-                timeline.add(key);
+        Loader.prototype.loadTimelineKeys = function (aTimeline, aKeys) {
+            for (var i = 0; i < aKeys.length(); i++) {
+                var key = aKeys.getTimelineKey(i, this._spriter);
+                aTimeline.add(key);
             }
         };
         // -------------------------------------------------------------------------
@@ -3484,8 +3519,9 @@ var SpriterExample;
             //this.load.json("HeroDataJSON", path + "Hero.json");
             //this.load.binary("HeroDataBin", path + "Hero.bin", this.onBinaryLoaded, this);
             // test
-            this.load.atlas("TEST", path + "TEST.png", path + "TEST.json");
+            this.load.atlas("TEST", path + "Atlas.png", path + "Atlas.json");
             this.load.xml("TESTXml", path + "TEST.xml");
+            this.load.json("TESTJson", path + "TEST.json");
         };
         // -------------------------------------------------------------------------
         Preloader.prototype.onBinaryLoaded = function (key, data) {
@@ -3704,7 +3740,8 @@ var SpriterExample;
             //this.spriterGroup = new Spriter.SpriterGroup(this.game, spriterData, "Hero", "Player", 0, 100);
             //this.spriterGroup.position.setTo(320, 350);
             var spriterLoader = new Spriter.Loader();
-            var spriterFile = new Spriter.SpriterXml(this.cache.getXML("TESTXml"));
+            //var spriterFile = new Spriter.SpriterXml(this.cache.getXML("TESTXml"));
+            var spriterFile = new Spriter.SpriterJSON(this.cache.getJSON("TESTJson"));
             var spriterData = spriterLoader.load(spriterFile);
             this._spriterGroup = new Spriter.SpriterGroup(this.game, spriterData, "TEST", "Hero", 0, 100);
             this._spriterGroup.position.setTo(420, 400);

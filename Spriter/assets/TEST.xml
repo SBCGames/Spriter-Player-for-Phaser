@@ -46,7 +46,7 @@
             <map folder="0" file="5" target_folder="0" target_file="5"/>
         </character_map>
         <var_defs>
-            <i id="0" name="textVar" type="string" default="&quot;&quot;"/>
+            <i id="0" name="textVar" type="string" default=""/>
         </var_defs>
         <animation id="0" name="Animation_1" length="1700" interval="100">
             <mainline>

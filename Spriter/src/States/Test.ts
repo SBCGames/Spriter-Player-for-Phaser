@@ -27,7 +27,8 @@
 
 
             var spriterLoader = new Spriter.Loader();
-            var spriterFile = new Spriter.SpriterXml(this.cache.getXML("TESTXml"));
+            //var spriterFile = new Spriter.SpriterXml(this.cache.getXML("TESTXml"));
+            var spriterFile = new Spriter.SpriterJSON(this.cache.getJSON("TESTJson"));
             var spriterData = spriterLoader.load(spriterFile);
 
             this._spriterGroup = new Spriter.SpriterGroup(this.game, spriterData, "TEST", "Hero", 0, 100);

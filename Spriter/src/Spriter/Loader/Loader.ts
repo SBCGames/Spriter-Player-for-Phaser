@@ -3,11 +3,13 @@
     export class Loader {
 
         private _spriter: Spriter;
+        private _fileType: eFileType;
 
         // -------------------------------------------------------------------------
         public load(file: SpriterFile): Spriter {
 
             this._spriter = new Spriter();
+            this._fileType = file.getType();
 
             // folders and files
             var folders = file.getNodes("folder");
@@ -136,14 +138,23 @@
                 return;
             }
 
-            var varDefs = variables.getChildNodes(0, "i");
+            // different structure for json than for xml
+            var varDefs: ISpriterNodeList;
+            if (this._fileType !== eFileType.JSON) {
+                varDefs = variables.getChildNodes(0, "i");
+            } else {
+                varDefs = variables;
+            }
 
             for (var i = 0; i < varDefs.length(); i++) {
                 var varDef = varDefs.getVariable(i);
                 entity.addVariable(varDef);
             }
 
-            varDefs.processed();
+            // different structure for json than for xml
+            if (this._fileType !== eFileType.JSON) {
+                varDefs.processed();
+            } 
         }
 
         // -------------------------------------------------------------------------
@@ -175,7 +186,8 @@
                 var meta = animations.getChildNodes(i, "meta");
                 if (meta.length() > 0) {
                     // var lines
-                    var varlines = meta.getChildNodes(0, "varline");
+                    // OMG - typo in attribute name in JSOUN export... what the hell! TODO - remove when corrected
+                    var varlines = meta.getChildNodes(0, (this._fileType !== eFileType.JSON) ? "varline" : "valline");
                     this.loadVarlines(entity, animation, varlines);
                     varlines.processed();
 
@@ -227,11 +239,11 @@
         }
 
         // -------------------------------------------------------------------------
-        private loadTimelines(animation: Animation, timelines: ISpriterNodeList): void {
-            for (var i = 0; i < timelines.length(); i++) {
-                var timeline = timelines.getTimeline(i);
+        private loadTimelines(animation: Animation, aTimelines: ISpriterNodeList): void {
+            for (var i = 0; i < aTimelines.length(); i++) {
+                var timeline = aTimelines.getTimeline(i);
 
-                var keys = timelines.getChildNodes(i, "key");
+                var keys = aTimelines.getChildNodes(i, "key");
                 this.loadTimelineKeys(timeline, keys);
                 keys.processed();
 
@@ -240,10 +252,10 @@
         }
 
         // -------------------------------------------------------------------------
-        private loadTimelineKeys(timeline: Timeline, keys: ISpriterNodeList): void {
-            for (var i = 0; i < keys.length(); i++) {
-                var key = keys.getTimelineKey(i, this._spriter);
-                timeline.add(key);
+        private loadTimelineKeys(aTimeline: Timeline, aKeys: ISpriterNodeList): void {
+            for (var i = 0; i < aKeys.length(); i++) {
+                var key = aKeys.getTimelineKey(i, this._spriter);
+                aTimeline.add(key);
             }
         }
 
