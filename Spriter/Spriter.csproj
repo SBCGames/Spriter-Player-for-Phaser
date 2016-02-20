@@ -22,6 +22,8 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\TEST.png" />
+    <Content Include="assets\TEST.xml" />
     <Content Include="css\app.css" />
     <Content Include="index.html" />
     <Content Include="web.config" />
@@ -74,6 +76,7 @@
     <TypeScriptCompile Include="src\Game.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\TEST.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
