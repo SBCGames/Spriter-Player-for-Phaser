@@ -25,6 +25,10 @@
         private _animationName: string;
         private _animationSpeed: number;
 
+        private _mainlineStepper: LineStepper = new LineStepper();
+        private _lineSteppers: LineStepper[] = [];
+        private _lineSteppersCount: number = 0;
+
         private _bones: SpriterBone[] = [];
         private _objects: SpriterObject[] = [];
         private _tags: number = 0;  // up to 32 tags - 1 per bit
@@ -208,11 +212,12 @@
             this._finished = false;
 
             // reset time to beginning of animation and find first from and to keys
-            this._animation.mainline.reset();
+            this._mainlineStepper.reset();
+            this._mainlineStepper.line = this._animation.mainline;
             this._time = 0;
 
             // reset all additional time lines (soundline, varline, tagline, eventline)
-            aAnimation.resetLines();
+            this.resetLines();
 
             // reset tags
             this._tags = 0;
@@ -226,6 +231,27 @@
             this.loadKeys(<KeyMainline>this._animation.mainline.at(0), true);
             // first update - to set correct positions
             this.updateCharacter();
+        }
+
+        // -------------------------------------------------------------------------
+        public resetLines(): void {
+            // reset steppers
+            this._lineSteppersCount = 0;
+
+            // go through all lines (sounds, events, tags, vars)
+            for (var i = 0; i < this._animation.linesLength; i++) {
+                var line = this._animation.getLineById(i);
+
+                // if not enough line steppers in array, add new one
+                if (this._lineSteppersCount >= this._lineSteppers.length) {
+                    this._lineSteppers[this._lineSteppersCount] = new LineStepper();
+                }
+
+                // get free stepper
+                var stepper = this._lineSteppers[this._lineSteppersCount++];
+                stepper.reset();
+                stepper.line = line;
+            }
         }
 
         // -------------------------------------------------------------------------
@@ -337,7 +363,7 @@
                 return;
             }
 
-            var mainline = this._animation.mainline;
+            var mainlineStepper = this._mainlineStepper;
 
             // check if in the end of animation and whether to loop or not
             if (this._time > this._animation.length) {
@@ -353,10 +379,10 @@
 
             // consume all new keys
             var key: KeyMainline;
-            while ((key = <KeyMainline>mainline.step(this._time)) !== null) {
+            while ((key = <KeyMainline>mainlineStepper.step(this._time)) !== null) {
                 //console.log("got key at: " + key.time + " time: " + this._time);
                 this.loadKeys(key);
-                mainline.lastTime = key.time;
+                mainlineStepper.lastTime = key.time;
             }
 
 
@@ -404,11 +430,12 @@
 
         // -------------------------------------------------------------------------
         public updateLines(): void {
-            for (var i = this._animation.linesLength - 1; i >= 0; i--) {
-                var line = this._animation.getLineById(i);
+            for (var i = this._lineSteppersCount - 1; i >= 0; i--) {
+                var lineStepper = this._lineSteppers[i];
+                var line = lineStepper.line;
                 var key: Key;
 
-                while ((key = line.step(this._time)) !== null) {
+                while ((key = lineStepper.step(this._time)) !== null) {
                     switch (line.type) {
                         case eTimelineType.SOUND_LINE:
                             //console.log("sound: " + line.name + " - key: " + key.id + ", time: " + key.time);
@@ -443,7 +470,7 @@
                             break;
                     }
 
-                    line.lastTime = key.time;
+                    lineStepper.lastTime = key.time;
                 }
             }
         }

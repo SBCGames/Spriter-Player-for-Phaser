@@ -72,13 +72,6 @@ module Spriter {
         }
 
         // -------------------------------------------------------------------------
-        public resetLines(): void {
-            for (var i = 0; i < this._lines.length; i++) {
-                this._lines.getById(i).reset();
-            }
-        }
-
-        // -------------------------------------------------------------------------
         public get length(): number {
             return this._length;
         }

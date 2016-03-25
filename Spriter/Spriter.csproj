@@ -33,6 +33,7 @@
     <TypeScriptCompile Include="lib\phaser.d.ts" />
     <TypeScriptCompile Include="lib\pixi.d.ts" />
     <TypeScriptCompile Include="src\Spriter\IdNameMap.ts" />
+    <TypeScriptCompile Include="src\Spriter\LineStepper.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\ISpriterNodeList.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\NodeListBin.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\NodeListJSON.ts" />

@@ -1,4 +1,4 @@
-﻿/// <reference path="SpriterFile.ts" />
+/// <reference path="SpriterFile.ts" />
 
 module Spriter {
 
@@ -186,7 +186,7 @@ module Spriter {
 
         // -------------------------------------------------------------------------
         private readFixed1_7(): number {
-            var value = this._bin.getInt32(this._tmpPosition++) & 0xFF;
+            var value = this._bin.getInt8(this._tmpPosition++) & 0xFF;
             return value / 128;
         }
 
