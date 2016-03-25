@@ -1,5 +1,10 @@
 # Spriter-Player-for-Phaser
+**2016-03-25**
 
+Fixed bug when creating multiple instances of SpriterGroup pointing to the same Spriter animation (instances shared some variables with each other).
+
+</br>
+</br>
 
 **2016-02-20**
 
