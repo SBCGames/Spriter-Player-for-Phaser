@@ -1,4 +1,13 @@
 # Spriter-Player-for-Phaser
+**2016-04-17**
+
+Split into Spriter Player and Test example of usage</br>
+Newly, there are both Spriter Player and minimized version of player in Build directory.</br>
+In Lib directory of Test you can find Typescript definitions in spriter.d.ts file.
+
+</br>
+</br>
+
 **2016-03-25**
 
 Fixed bug when creating multiple instances of SpriterGroup pointing to the same Spriter animation (instances shared some variables with each other).
