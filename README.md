@@ -1,9 +1,9 @@
 # Spriter-Player-for-Phaser
 **2016-04-17**
 
-Split into Spriter Player and Test example of usage</br>
+Code is split into Spriter Player and Test example of usage.</br>
 Newly, there are both Spriter Player and minimized version of player in Build directory.</br>
-In Lib directory of Test you can find Typescript definitions in spriter.d.ts file.
+In Build directory you can also find Typescript definitions in spriter.d.ts file.
 
 </br>
 </br>
