@@ -98,7 +98,7 @@
         }
 
         // -------------------------------------------------------------------------
-        public get puased(): boolean {
+        public get paused(): boolean {
             return this._paused;
         }
 
@@ -176,16 +176,16 @@
         }
 
         // -------------------------------------------------------------------------
-        public setAnimationSpeedPercent(aAnimationSpeedPercent: number = 100) {
-            this._animationSpeed = aAnimationSpeedPercent / 100;
+        public setAnimationSpeedPercent(animationSpeedPercent: number = 100): void {
+            this._animationSpeed = animationSpeedPercent / 100;
         }
 
         // -------------------------------------------------------------------------
-        public playAnimationById(aAnimationId: number): void {
-            var animation = this._entity.getAnimationById(aAnimationId);
+        public playAnimationById(animationId: number): void {
+            var animation = this._entity.getAnimationById(animationId);
 
             if (animation === undefined || animation === null) {
-                console.warn("Animation " + aAnimationId + " for entity " + this._entityName + " does not exist!");
+                console.warn("Animation " + animationId + " for entity " + this._entityName + " does not exist!");
                 return;
             }
 
@@ -193,11 +193,11 @@
         }
 
         // -------------------------------------------------------------------------
-        public playAnimationByName(aAnimationName: string): void {
-            var animation = this._entity.getAnimationByName(aAnimationName);
+        public playAnimationByName(animationName: string): void {
+            var animation = this._entity.getAnimationByName(animationName);
 
             if (animation === undefined || animation === null) {
-                console.warn("Animation " + aAnimationName + " for entity " + this._entityName + " does not exist!");
+                console.warn("Animation " + animationName + " for entity " + this._entityName + " does not exist!");
                 return;
             }
 
@@ -205,9 +205,9 @@
         }
 
         // -------------------------------------------------------------------------
-        private playAnimation(aAnimation: Animation): void{
-            this._animationName = aAnimation.name;
-            this._animation = aAnimation
+        private playAnimation(animation: Animation): void{
+            this._animationName = animation.name;
+            this._animation = animation
 
             this._finished = false;
 
@@ -234,7 +234,7 @@
         }
 
         // -------------------------------------------------------------------------
-        public resetLines(): void {
+        private resetLines(): void {
             // reset steppers
             this._lineSteppersCount = 0;
 
@@ -255,7 +255,7 @@
         }
 
         // -------------------------------------------------------------------------
-        private setBones(aBones: Ref[], aForce: boolean = false): void {
+        private setBones(bones: Ref[], force: boolean = false): void {
             // switch off all existing bones
             for (var i = 0; i < this._bones.length; i++) {
                 if (this._bones[i] !== undefined) {
@@ -264,8 +264,8 @@
             }
 
             // go through all bones and add new ones if necessary and activate used ones
-            for (var i = 0; i < aBones.length; i++) {
-                var ref = aBones[i];
+            for (var i = 0; i < bones.length; i++) {
+                var ref = bones[i];
 
                 // if bone does not exist add it and make active, else make it active only
                 if (this._bones[ref.id] === undefined) {
@@ -279,14 +279,14 @@
                 bone.setOn(true);
                 bone.parent = ref.parent;
 
-                if (bone.timelineKey !== ref.key || bone.timeline !== ref.timeline || aForce) {
+                if (bone.timelineKey !== ref.key || bone.timeline !== ref.timeline || force) {
                     bone.setKey(this._entity, this._animation, ref.timeline, ref.key);
                 }
             }
         }
 
         // -------------------------------------------------------------------------
-        private setObjects(aObjects: Ref[], aForce: boolean = false): void {
+        private setObjects(objects: Ref[], force: boolean = false): void {
             // switch off (kill) all existing sprites
             for (var i = 0; i < this._objects.length; i++) {
                 if (this._objects[i] !== undefined) {
@@ -296,8 +296,8 @@
 
             // go through all objects/sprites and add new ones if necessary and activate used ones
             var zChange = false;
-            for (var i = 0; i < aObjects.length; i++) {
-                var ref = aObjects[i];
+            for (var i = 0; i < objects.length; i++) {
+                var ref = objects[i];
 
                 var object: SpriterObject = null;
                 var sprite: Phaser.Sprite = null;
@@ -340,7 +340,7 @@
                 //}
 
 
-                if (object.timelineKey !== ref.key || object.timeline !== ref.timeline || aForce) {
+                if (object.timelineKey !== ref.key || object.timeline !== ref.timeline || force) {
                     object.setKey(this._entity, this._animation, ref.timeline, ref.key);
                 }
             }
@@ -358,7 +358,7 @@
         }
 
         // -------------------------------------------------------------------------
-        public updateAnimation() {
+        public updateAnimation(): void {
             if (this._paused || this._finished) {
                 return;
             }
@@ -429,7 +429,7 @@
         }
 
         // -------------------------------------------------------------------------
-        public updateLines(): void {
+        private updateLines(): void {
             for (var i = this._lineSteppersCount - 1; i >= 0; i--) {
                 var lineStepper = this._lineSteppers[i];
                 var line = lineStepper.line;

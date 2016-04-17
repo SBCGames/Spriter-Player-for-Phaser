@@ -14,34 +14,44 @@
         create() {
             this.stage.backgroundColor = 0x527F68;
 
-            //var spriterLoader = new Spriter.Loader();
-            //var spriterFile = new Spriter.SpriterXml(this.cache.getXML("HeroDataXml") /*, this.minimizedDefinitions*/);
-            ////var spriterFile = new Spriter.SpriterJSON(this.cache.getJSON("HeroDataJSON"), this.minimizedDefinitions);
-            ////var spriterFile = new Spriter.SpriterBin(this.cache.getBinary("HeroDataBin"));
-            //var spriterData = spriterLoader.load(spriterFile);
 
+            // ===============================================================
+            // BASIC SETUP
+            // ===============================================================
 
-            //this.spriterGroup = new Spriter.SpriterGroup(this.game, spriterData, "Hero", "Player", 0, 100);
-            //this.spriterGroup.position.setTo(320, 350);
-
-
-
+            // create Spriter loader - class that can change Spriter file into internal structure
             var spriterLoader = new Spriter.Loader();
+
+            // create Spriter file object - it wraps XML/JSON loaded with Phaser Loader
             //var spriterFile = new Spriter.SpriterXml(this.cache.getXML("TESTXml"));
             var spriterFile = new Spriter.SpriterJSON(this.cache.getJSON("TESTJson"));
+
+            // proces Spriter file (XML/JSON) with Spriter loader - outputs Spriter animation which you can instantiate multiple times with SpriterGroup
             var spriterData = spriterLoader.load(spriterFile);
 
+            // create actual renderable object - it is extension of Phaser.Group
             this._spriterGroup = new Spriter.SpriterGroup(this.game, spriterData, "TEST", "Hero", 0, 100);
             this._spriterGroup.position.setTo(420, 400);
 
+            // adds SpriterGroup to Phaser.World to appear on screen
+            this.world.add(this._spriterGroup);
+
+
+
+            // ===============================================================
+            // LISTENING TO SIGNALS
+            // ===============================================================
+
+            // Spriter animation can send info on when sounds, events, tags, variable - here we are listening to Phaser.Signals when animation variable is set
             this._spriterGroup.onVariableSet.add(function (spriter: Spriter.SpriterGroup, variable: Spriter.Variable) {
                 this._text = variable.string;
             }, this);
 
 
 
-            this.world.add(this._spriterGroup);
-
+            // ===============================================================
+            // REST OF THE EXAMPLE - change animations, change charmaps
+            // ===============================================================
 
             // cycle animations
             var animation = 0;
@@ -54,7 +64,8 @@
             // change char maps
             var charMaps = ["Green", "Brush"];
             var charmapID = 0;
-            
+
+            // on C key cycle through all charmaps
             key = this.game.input.keyboard.addKey(Phaser.Keyboard.C);
             key.onDown.add(function () {
                 if (charmapID >= this._spriterGroup.entity.charMapsLength) {
@@ -78,6 +89,13 @@
             this.game.debug.text("Press C to cycle charmaps", 50, 46, "rgb(255, 255, 255)");
             this.game.debug.text(this._text, 180, 232, "rgb(255, 255, 255)");
         }
+
+
+        /*
+
+        // =========================================================================
+        // ============= UNDER CONSTRUCTION - TOUCH AT YOUR OWN RISK ===============
+        // =========================================================================
 
         // -------------------------------------------------------------------------
         // definitions if using minimized Spriter files
@@ -265,5 +283,6 @@
             }
         }
         // ---- end ----
+        */
     }
 }

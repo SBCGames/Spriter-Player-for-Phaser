@@ -3,7 +3,7 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <ProjectGuid>{3736B446-A428-487B-A60D-139832CB1FA4}</ProjectGuid>
+    <ProjectGuid>{687F7C00-A409-4DC9-8AA9-36E2719E1AAB}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <OutputPath>bin</OutputPath>
@@ -22,52 +22,15 @@
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="assets\Atlas.png" />
+    <Content Include="assets\TEST.xml" />
+    <Content Include="css\app.css" />
+    <Content Include="index.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="lib\p2.d.ts" />
-    <TypeScriptCompile Include="lib\phaser.d.ts" />
-    <TypeScriptCompile Include="lib\pixi.d.ts" />
-    <TypeScriptCompile Include="src\Spriter\IdNameMap.ts" />
-    <TypeScriptCompile Include="src\Spriter\LineStepper.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\ISpriterNodeList.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\NodeListBin.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\NodeListJSON.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\NodeListXml.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\SpriterFile.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\SpriterBin.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\SpriterJSON.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\SpriterXml.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Animation.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Entity.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\File.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Folder.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\CharMap.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\CharMapStack.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Item.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Key.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\KeyMainline.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\KeyTag.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\KeyVariable.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Baseline.ts" />
-    <TypeScriptCompile Include="src\Spriter\Math.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Variable.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Varline.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\ObjectInfo.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Types.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Ref.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\Timeline.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\KeyTimeline.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\SpatialInfo.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\KeyObject.ts" />
-    <TypeScriptCompile Include="src\Spriter\Structure\KeyBone.ts" />
-    <TypeScriptCompile Include="src\Spriter\Loader\Loader.ts" />
-    <TypeScriptCompile Include="src\Spriter\Spriter.ts" />
-    <TypeScriptCompile Include="src\Spriter\SpriterBone.ts" />
-    <TypeScriptCompile Include="src\Spriter\SpriterGroup.ts" />
-    <TypeScriptCompile Include="src\Spriter\SpriterObject.ts" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="assets\Atlas.json" />
+    <Content Include="assets\TEST.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -76,11 +39,22 @@
     </None>
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <TypeScriptCompile Include="lib\p2.d.ts" />
+    <TypeScriptCompile Include="lib\phaser.d.ts" />
+    <TypeScriptCompile Include="lib\pixi.d.ts" />
+    <TypeScriptCompile Include="lib\spriter.d.ts" />
+    <TypeScriptCompile Include="src\App.ts" />
+    <TypeScriptCompile Include="src\Game.ts" />
+    <TypeScriptCompile Include="src\States\Boot.ts" />
+    <TypeScriptCompile Include="src\States\Preloader.ts" />
+    <TypeScriptCompile Include="src\States\Test.ts" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>
   <PropertyGroup>
-    <RootNamespace>_TestBad_</RootNamespace>
+    <RootNamespace>Test</RootNamespace>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\WebApplications\Microsoft.WebApplication.targets')" />
@@ -90,9 +64,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>65211</DevelopmentServerPort>
+          <DevelopmentServerPort>55821</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:65211/</IISUrl>
+          <IISUrl>http://localhost:55821/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
@@ -106,36 +80,31 @@
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptTarget>ES5</TypeScriptTarget>
-    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
-    <TypeScriptOutFile>..\Build\spriter.js</TypeScriptOutFile>
-    <TypeScriptOutDir>D:\MyHTML5Apps\Spriter\</TypeScriptOutDir>
+    <TypeScriptOutFile>js\test.js</TypeScriptOutFile>
+    <TypeScriptOutDir>D:\MyHTML5Apps\Spriter\Test</TypeScriptOutDir>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
-    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
     <TypeScriptSourceMap>false</TypeScriptSourceMap>
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
-    <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
-    <TypeScriptOutFile>..\Build\spriter.min.js</TypeScriptOutFile>
-    <TypeScriptOutDir>D:\MyHTML5Apps\Spriter\</TypeScriptOutDir>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
     <TypeScriptMapRoot />
     <TypeScriptSourceRoot />
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
-  <PropertyGroup>
-    <PostBuildEvent>if $(ConfigurationName) == Release (
-  uglifyjs ..\..\Build\spriter.min.js -m -c "unused=true,dead_code=true,drop_console=true" --output ..\..\Build\spriter.min.js
-)</PostBuildEvent>
-  </PropertyGroup>
 </Project>

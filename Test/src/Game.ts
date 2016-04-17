@@ -6,10 +6,10 @@ module SpriterExample {
 
         // -------------------------------------------------------------------------
         constructor() {
-            Game.game = this;
-
             // init game
             super(Global.GAME_WIDTH, Global.GAME_HEIGHT, Phaser.AUTO, "content", null /* , transparent, antialias, physicsConfig */);
+
+            Game.game = this;
             
             // states
             this.state.add("Boot", Boot);
