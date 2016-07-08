@@ -95,8 +95,9 @@ module Spriter {
 
         // -------------------------------------------------------------------------
         public getTag(element: number): Item {
-            console.error("implement loading Tag");
-            return null;
+            return new Item(
+                this.parseInt(element, "id"),
+                this.parseString(element, "name"));
         }
 
         // -------------------------------------------------------------------------

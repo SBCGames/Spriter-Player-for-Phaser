@@ -1,14 +1,14 @@
 ﻿module Spriter {
 
-    export enum eObjectType {
+    export const enum eObjectType {
         SPRITE, BONE, BOX, POINT, SOUND
     }
 
-    export enum eCurveType {
-        LINEAR, INSTANT, QUADRATIC, CUBIC
+    export const enum eCurveType {
+        LINEAR, INSTANT, QUADRATIC, CUBIC, QUARTIC, QUINTIC, BEZIER
     }
 
-    export enum eVariableType {
+    export const enum eVariableType {
         INT, FLOAT, STRING
     }
 
@@ -26,7 +26,10 @@
             "instatnt":     eCurveType.INSTANT,
             "linear":       eCurveType.LINEAR,
             "quadratic":    eCurveType.QUADRATIC,
-            "cubic":        eCurveType.CUBIC
+            "cubic":        eCurveType.CUBIC,
+            "quartic":      eCurveType.QUARTIC,
+            "quintic":      eCurveType.QUINTIC,
+            "bezier":       eCurveType.BEZIER
         }
 
         private static nameToVariableType = {

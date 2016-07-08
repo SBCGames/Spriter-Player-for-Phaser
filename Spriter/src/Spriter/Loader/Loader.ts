@@ -64,7 +64,12 @@
                 return;
             }
 
-            var tagDefs = tags.getChildNodes(0, "i");
+            var tagDefs: ISpriterNodeList;
+            if (this._fileType !== eFileType.JSON) {
+                tagDefs = tags.getChildNodes(0, "i");
+            } else {
+                tagDefs = tags;
+            }
 
             for (var i = 0; i < tagDefs.length(); i++) {
                 var tag = tagDefs.getTag(i);

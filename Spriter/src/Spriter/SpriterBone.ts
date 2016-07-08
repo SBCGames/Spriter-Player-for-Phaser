@@ -199,6 +199,15 @@
 
                 case eCurveType.CUBIC:
                     return cubic(0, this.key.c1, this.key.c2, 1, t);
+
+                case eCurveType.QUARTIC:
+                    return quartic(0, this.key.c1, this.key.c2, this.key.c3, 1, t);
+
+                case eCurveType.QUINTIC:
+                    return quintic(0, this.key.c1, this.key.c2, this.key.c3, this.key.c4, 1, t);
+
+                case eCurveType.BEZIER:
+                    return bezier(this.key.c1, this.key.c2, this.key.c3, this.key.c4, t);
             }
 
             return 0;

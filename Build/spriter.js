@@ -769,7 +769,7 @@ var Spriter;
         SpriterBin.prototype.getObjectInfo = function (position, index) {
             this._tmpPosition = this.getAttribsPosition(position);
             var name = "";
-            var type = Spriter.eObjectType.SPRITE;
+            var type = 0 /* SPRITE */;
             var width = 0;
             var height = 0;
             for (var i = this._bin.getUint8(this._tmpPosition++) - 1; i >= 0; i--) {
@@ -779,7 +779,7 @@ var Spriter;
                         break;
                     case SpriterBin.ATTR_OBJ_INFO_TYPE:
                         if (this.readUint8() === 1) {
-                            type = Spriter.eObjectType.BONE;
+                            type = 1 /* BONE */;
                         }
                         break;
                     case SpriterBin.ATTR_OBJ_INFO_WIDTH:
@@ -917,7 +917,7 @@ var Spriter;
             var id = 0;
             var name = "";
             var obj = 0;
-            var type = Spriter.eObjectType.SPRITE;
+            var type = 0 /* SPRITE */;
             for (var i = this._bin.getUint8(this._tmpPosition++) - 1; i >= 0; i--) {
                 switch (this._bin.getUint8(this._tmpPosition++)) {
                     case SpriterBin.ATTR_TIMELINE_ID:
@@ -931,7 +931,7 @@ var Spriter;
                         break;
                     case SpriterBin.ATTR_TIMELINE_OBJ_TYPE:
                         if (this.readUint8() === 1) {
-                            type = Spriter.eObjectType.BONE;
+                            type = 1 /* BONE */;
                         }
                         break;
                 }
@@ -969,7 +969,7 @@ var Spriter;
             var time = 0;
             var spin = 1;
             // curve and params
-            var curve = Spriter.eCurveType.LINEAR;
+            var curve = 0 /* LINEAR */;
             var c1 = 0;
             var c2 = 0;
             var c3 = 0;
@@ -1012,7 +1012,7 @@ var Spriter;
                 sprite = true;
             }
             // other curve than linear?
-            if (curve !== Spriter.eCurveType.LINEAR) {
+            if (curve !== 0 /* LINEAR */) {
                 key.setCurve(curve, c1, c2, c3, c4);
             }
             this._tmpPosition = this.getAttribsPosition(offset);
@@ -1250,8 +1250,7 @@ var Spriter;
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getTag = function (element) {
-            console.error("implement loading Tag");
-            return null;
+            return new Spriter.Item(this.parseInt(element, "id"), this.parseString(element, "name"));
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getEntity = function (element) {
@@ -1279,7 +1278,7 @@ var Spriter;
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getVariable = function (element) {
             var type = Spriter.Types.getVariableTypeForName(this.parseString(element, "type"));
-            return new Spriter.Variable(this.parseInt(element, "id"), this.parseString(element, "name"), type, (type === Spriter.eVariableType.STRING) ? this.parseString(element, "default") : this.parseFloat(element, "default", 0));
+            return new Spriter.Variable(this.parseInt(element, "id"), this.parseString(element, "name"), type, (type === 2 /* STRING */) ? this.parseString(element, "default") : this.parseFloat(element, "default", 0));
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getAnimation = function (element) {
@@ -1315,7 +1314,7 @@ var Spriter;
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getVariableKey = function (element, type) {
-            return new Spriter.KeyVariable(this.parseInt(element, "id"), this.parseInt(element, "time"), (type === Spriter.eVariableType.STRING) ? this.parseString(element, "val") : this.parseFloat(element, "val"));
+            return new Spriter.KeyVariable(this.parseInt(element, "id"), this.parseInt(element, "time"), (type === 2 /* STRING */) ? this.parseString(element, "val") : this.parseFloat(element, "val"));
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getTimelineKey = function (element, index, spriter) {
@@ -1466,7 +1465,7 @@ var Spriter;
         // -------------------------------------------------------------------------
         SpriterXml.prototype.getVariable = function (element) {
             var type = Spriter.Types.getVariableTypeForName(this.parseString(element, "type"));
-            return new Spriter.Variable(this.parseInt(element, "id"), this.parseString(element, "name"), type, (type === Spriter.eVariableType.STRING) ? this.parseString(element, "default") : this.parseFloat(element, "default", 0));
+            return new Spriter.Variable(this.parseInt(element, "id"), this.parseString(element, "name"), type, (type === 2 /* STRING */) ? this.parseString(element, "default") : this.parseFloat(element, "default", 0));
         };
         // -------------------------------------------------------------------------
         SpriterXml.prototype.getAnimation = function (element) {
@@ -1502,7 +1501,7 @@ var Spriter;
         };
         // -------------------------------------------------------------------------
         SpriterXml.prototype.getVariableKey = function (element, type) {
-            return new Spriter.KeyVariable(this.parseInt(element, "id"), this.parseInt(element, "time"), (type === Spriter.eVariableType.STRING) ? this.parseString(element, "val") : this.parseFloat(element, "val"));
+            return new Spriter.KeyVariable(this.parseInt(element, "id"), this.parseInt(element, "time"), (type === 2 /* STRING */) ? this.parseString(element, "val") : this.parseFloat(element, "val"));
         };
         // -------------------------------------------------------------------------
         SpriterXml.prototype.getTimelineKey = function (element, index, spriter) {
@@ -2096,14 +2095,65 @@ var Spriter;
     Spriter.linear = linear;
     // -------------------------------------------------------------------------
     function quadratic(a, b, c, t) {
-        return this.linear(this.linear(a, b, t), this.linear(b, c, t), t);
+        return linear(linear(a, b, t), linear(b, c, t), t);
     }
     Spriter.quadratic = quadratic;
     // -------------------------------------------------------------------------
     function cubic(a, b, c, d, t) {
-        return this.linear(this.quadratic(a, b, c, t), this.quadratic(b, c, d, t), t);
+        return linear(quadratic(a, b, c, t), quadratic(b, c, d, t), t);
     }
     Spriter.cubic = cubic;
+    // -------------------------------------------------------------------------
+    function quartic(a, b, c, d, e, t) {
+        return linear(cubic(a, b, c, d, t), cubic(b, c, d, e, t), t);
+    }
+    Spriter.quartic = quartic;
+    // -------------------------------------------------------------------------
+    function quintic(a, b, c, d, e, f, t) {
+        return linear(quartic(a, b, c, d, e, t), quartic(b, c, d, e, f, t), t);
+    }
+    Spriter.quintic = quintic;
+    // -------------------------------------------------------------------------
+    // B(t) = (1 − t)^3 * P0 + 3(1 − t)^2 * t * P1 + 3(1 − t) *  t^2 * P2 + t^3 * P3  , 0 ≤ t ≤ 1.
+    function bezierCoord(p1, p2, t) {
+        // p0 = 0, p3 = 1
+        var p0 = 0;
+        var p3 = 1;
+        var u = 1 - t;
+        var t2 = t * t;
+        var u2 = u * u;
+        var u3 = u2 * u;
+        var t3 = t2 * t;
+        return 0 + 3 * u2 * t * p1 + 3 * u * t2 * p2 + t3 * p3;
+    }
+    // -------------------------------------------------------------------------
+    function bezier(p1x, p1y, p2x, p2y, t) {
+        var epsilon = 0.001;
+        var maxIterations = 10;
+        // binary search
+        //establish bounds
+        var lower = 0;
+        var upper = 1;
+        var percent = (upper + lower) / 2;
+        //initial x
+        var x = bezierCoord(p1x, p2x, percent);
+        //loop until returned x - t is less than epsilon
+        var iterations = 0;
+        while (Math.abs(t - x) > epsilon && iterations < maxIterations) {
+            if (t > x) {
+                lower = percent;
+            }
+            else {
+                upper = percent;
+            }
+            percent = (upper + lower) / 2;
+            x = bezierCoord(p1x, p2x, percent);
+            ++iterations;
+        }
+        //we're within tolerance of the desired x value. Return the y value.
+        return bezierCoord(p1y, p2y, percent);
+    }
+    Spriter.bezier = bezier;
     // -------------------------------------------------------------------------
     function angleLinear(angleA, angleB, spin, t) {
         // no spin
@@ -2160,7 +2210,7 @@ var Spriter;
             },
             // -------------------------------------------------------------------------
             set: function (value) {
-                if (this._type === Spriter.eVariableType.INT) {
+                if (this._type === 0 /* INT */) {
                     this._value = Math.floor(value);
                 }
                 else {
@@ -2280,27 +2330,6 @@ var Spriter;
 })(Spriter || (Spriter = {}));
 var Spriter;
 (function (Spriter) {
-    (function (eObjectType) {
-        eObjectType[eObjectType["SPRITE"] = 0] = "SPRITE";
-        eObjectType[eObjectType["BONE"] = 1] = "BONE";
-        eObjectType[eObjectType["BOX"] = 2] = "BOX";
-        eObjectType[eObjectType["POINT"] = 3] = "POINT";
-        eObjectType[eObjectType["SOUND"] = 4] = "SOUND";
-    })(Spriter.eObjectType || (Spriter.eObjectType = {}));
-    var eObjectType = Spriter.eObjectType;
-    (function (eCurveType) {
-        eCurveType[eCurveType["LINEAR"] = 0] = "LINEAR";
-        eCurveType[eCurveType["INSTANT"] = 1] = "INSTANT";
-        eCurveType[eCurveType["QUADRATIC"] = 2] = "QUADRATIC";
-        eCurveType[eCurveType["CUBIC"] = 3] = "CUBIC";
-    })(Spriter.eCurveType || (Spriter.eCurveType = {}));
-    var eCurveType = Spriter.eCurveType;
-    (function (eVariableType) {
-        eVariableType[eVariableType["INT"] = 0] = "INT";
-        eVariableType[eVariableType["FLOAT"] = 1] = "FLOAT";
-        eVariableType[eVariableType["STRING"] = 2] = "STRING";
-    })(Spriter.eVariableType || (Spriter.eVariableType = {}));
-    var eVariableType = Spriter.eVariableType;
     var Types = (function () {
         function Types() {
         }
@@ -2329,22 +2358,25 @@ var Spriter;
             return type;
         };
         Types.nameToObjectType = {
-            "sprite": eObjectType.SPRITE,
-            "bone": eObjectType.BONE,
-            "box": eObjectType.BOX,
-            "point": eObjectType.POINT,
-            "sound": eObjectType.SOUND
+            "sprite": 0 /* SPRITE */,
+            "bone": 1 /* BONE */,
+            "box": 2 /* BOX */,
+            "point": 3 /* POINT */,
+            "sound": 4 /* SOUND */
         };
         Types.nameToCurveType = {
-            "instatnt": eCurveType.INSTANT,
-            "linear": eCurveType.LINEAR,
-            "quadratic": eCurveType.QUADRATIC,
-            "cubic": eCurveType.CUBIC
+            "instatnt": 1 /* INSTANT */,
+            "linear": 0 /* LINEAR */,
+            "quadratic": 2 /* QUADRATIC */,
+            "cubic": 3 /* CUBIC */,
+            "quartic": 4 /* QUARTIC */,
+            "quintic": 5 /* QUINTIC */,
+            "bezier": 6 /* BEZIER */
         };
         Types.nameToVariableType = {
-            "int": eVariableType.INT,
-            "float": eVariableType.FLOAT,
-            "string": eVariableType.STRING
+            "int": 0 /* INT */,
+            "float": 1 /* FLOAT */,
+            "string": 2 /* STRING */
         };
         return Types;
     }());
@@ -2372,7 +2404,7 @@ var Spriter;
         __extends(Timeline, _super);
         // -------------------------------------------------------------------------
         function Timeline(id, name, type, objectRef) {
-            if (type === void 0) { type = Spriter.eObjectType.SPRITE; }
+            if (type === void 0) { type = 0 /* SPRITE */; }
             if (objectRef === void 0) { objectRef = -1; }
             _super.call(this, id, name);
             this.type = Spriter.eTimelineType.TIME_LINE;
@@ -2408,7 +2440,7 @@ var Spriter;
             _super.call(this, id, time);
             this._info = new Spriter.SpatialInfo();
             this._spin = spin;
-            this.setCurve(Spriter.eCurveType.LINEAR);
+            this.setCurve(0 /* LINEAR */);
         }
         // -------------------------------------------------------------------------
         KeyTimeline.prototype.setCurve = function (curveType, c1, c2, c3, c4) {
@@ -2596,7 +2628,13 @@ var Spriter;
             if (tags.length() === 0) {
                 return;
             }
-            var tagDefs = tags.getChildNodes(0, "i");
+            var tagDefs;
+            if (this._fileType !== Spriter.eFileType.JSON) {
+                tagDefs = tags.getChildNodes(0, "i");
+            }
+            else {
+                tagDefs = tags;
+            }
             for (var i = 0; i < tagDefs.length(); i++) {
                 var tag = tagDefs.getTag(i);
                 spriter.addTag(tag);
@@ -3018,17 +3056,23 @@ var Spriter;
         };
         // -------------------------------------------------------------------------
         SpriterBone.prototype.getTweenTime = function (time) {
-            if (this.key.curveType === Spriter.eCurveType.INSTANT) {
+            if (this.key.curveType === 1 /* INSTANT */) {
                 return 0;
             }
             var t = Phaser.Math.clamp((time - this.timeFrom) / (this.timeTo - this.timeFrom), 0, 1);
             switch (this.key.curveType) {
-                case Spriter.eCurveType.LINEAR:
+                case 0 /* LINEAR */:
                     return t;
-                case Spriter.eCurveType.QUADRATIC:
+                case 2 /* QUADRATIC */:
                     return Spriter.quadratic(0, this.key.c1, 1, t);
-                case Spriter.eCurveType.CUBIC:
+                case 3 /* CUBIC */:
                     return Spriter.cubic(0, this.key.c1, this.key.c2, 1, t);
+                case 4 /* QUARTIC */:
+                    return Spriter.quartic(0, this.key.c1, this.key.c2, this.key.c3, 1, t);
+                case 5 /* QUINTIC */:
+                    return Spriter.quintic(0, this.key.c1, this.key.c2, this.key.c3, this.key.c4, 1, t);
+                case 6 /* BEZIER */:
+                    return Spriter.bezier(this.key.c1, this.key.c2, this.key.c3, this.key.c4, t);
             }
             return 0;
         };
@@ -3275,7 +3319,7 @@ var Spriter;
                 // if bone does not exist add it and make active, else make it active only
                 if (this._bones[ref.id] === undefined) {
                     var newBone = new Spriter.SpriterBone();
-                    newBone.type = Spriter.eObjectType.BONE;
+                    newBone.type = 1 /* BONE */;
                     this._bones[ref.id] = newBone;
                 }
                 var bone = this._bones[ref.id];
@@ -3315,7 +3359,7 @@ var Spriter;
                 object.parent = ref.parent;
                 object.type = this._animation.getTimelineById(ref.timeline).objectType;
                 // is it sprite or any other type of object? (box / point)
-                if (object.type === Spriter.eObjectType.SPRITE) {
+                if (object.type === 0 /* SPRITE */) {
                     object.setOn(true);
                     if (object.sprite.z !== ref.z) {
                         object.sprite.z = ref.z;
@@ -3474,7 +3518,7 @@ var Spriter;
         SpriterObject.prototype.setKey = function (entity, animation, timelineId, keyId) {
             _super.prototype.setKey.call(this, entity, animation, timelineId, keyId);
             // set sprite - skip invisible objects - boxes, points
-            if (this.type === Spriter.eObjectType.SPRITE) {
+            if (this.type === 0 /* SPRITE */) {
                 var spriteKey = this.key;
                 var file = this._spriter.getFolderById(spriteKey.folder).getFileById(spriteKey.file);
                 this._file = file;
@@ -3486,7 +3530,7 @@ var Spriter;
         };
         // -------------------------------------------------------------------------
         SpriterObject.prototype.resetFile = function () {
-            if (this.type === Spriter.eObjectType.SPRITE) {
+            if (this.type === 0 /* SPRITE */) {
                 this.setFile(this._file);
             }
         };
