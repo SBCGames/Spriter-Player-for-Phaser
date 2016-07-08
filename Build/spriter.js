@@ -2628,6 +2628,7 @@ var Spriter;
             if (tags.length() === 0) {
                 return;
             }
+            // different structure for json than for xml
             var tagDefs;
             if (this._fileType !== Spriter.eFileType.JSON) {
                 tagDefs = tags.getChildNodes(0, "i");
@@ -2639,7 +2640,10 @@ var Spriter;
                 var tag = tagDefs.getTag(i);
                 spriter.addTag(tag);
             }
-            tagDefs.processed();
+            // different structure for json than for xml
+            if (this._fileType !== Spriter.eFileType.JSON) {
+                tagDefs.processed();
+            }
         };
         // -------------------------------------------------------------------------
         Loader.prototype.loadEntities = function (spriter, entities) {

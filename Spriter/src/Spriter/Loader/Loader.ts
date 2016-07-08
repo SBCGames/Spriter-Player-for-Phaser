@@ -64,6 +64,7 @@
                 return;
             }
 
+            // different structure for json than for xml
             var tagDefs: ISpriterNodeList;
             if (this._fileType !== eFileType.JSON) {
                 tagDefs = tags.getChildNodes(0, "i");
@@ -76,7 +77,10 @@
                 spriter.addTag(tag);
             }
 
-            tagDefs.processed();
+            // different structure for json than for xml
+            if (this._fileType !== eFileType.JSON) {
+                tagDefs.processed();
+            } 
         }
 
         // -------------------------------------------------------------------------

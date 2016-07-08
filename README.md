@@ -1,17 +1,17 @@
 # Spriter-Player-for-Phaser
+**2016-07-08**
+
+- added rest of easing functions - quartic, quintic, bezier,
+- corrected loading tag from JSON files.
+
+</br>
+</br>
+
 **2016-04-17**
 
 Code is split into Spriter Player and Test example of usage.</br>
 Newly, there are both Spriter Player and minimized version of player in Build directory.</br>
 In Build directory you can also find Typescript definitions in spriter.d.ts file.
-
-</br>
-</br>
-
-**2016-07-08**
-
-- added rest of easing functions - quartic, quintic, bezier,
-- corrected loading tag from JSON files.
 
 </br>
 </br>
