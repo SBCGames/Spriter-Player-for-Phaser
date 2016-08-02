@@ -1,4 +1,4 @@
-﻿/// <reference path="phaser.d.ts" />
+/// <reference path="phaser.d.ts" />
 
 declare module Spriter {
 
@@ -66,7 +66,7 @@ declare module Spriter {
         // number of animations for current entity
         animationsCount: number;
         // name of current animation
-        currentAnimationName(): string;
+        currentAnimationName: string;
 
         // add charmap on top of charmap stacky by name
         pushCharMap(charMapName: string): void;
