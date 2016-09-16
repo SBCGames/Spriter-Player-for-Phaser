@@ -3,10 +3,10 @@
 
 - added optional parameter in Spriter.SpriterJSON and Spriter.SpriterXml of type IFileOptions. This parameter is object with some optional keys. Currently important is <b>imageNameType</b> of type Spriter.eImageNameType. It converts and returns name of image taken from Spriter animation file in this way (let's assume name in animation file is path/image_name.png):
 
-NAME_ONLY (default): image_name
-NAME_AND_EXTENSION: image_name.png
-FULL_PATH_NO_EXTENSION: path/image_name
-ORIGINAL: path/image_name.png
+NAME_ONLY (default): image_name</br>
+NAME_AND_EXTENSION: image_name.png</br>
+FULL_PATH_NO_EXTENSION: path/image_name</br>
+ORIGINAL: path/image_name.png</br>
 
  So you can strip path, extension or both or keep original name.
 
