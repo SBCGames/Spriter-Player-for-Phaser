@@ -7,6 +7,20 @@ declare module Spriter {
     }
 
 
+    enum eImageNameType {
+        NAME_ONLY,
+        NAME_AND_EXTENSION,
+        FULL_PATH_NO_EXTENSION,
+        ORIGINAL
+    }
+
+
+    interface IFileOptions {
+        imageNameType?: eImageNameType;
+        minDefs?: any;
+    }
+
+
     class Spriter {
 
     }
@@ -23,12 +37,12 @@ declare module Spriter {
 
 
     class SpriterJSON extends SpriterFile {
-        constructor(JSONData: any, minDefs?: any);
+        constructor(JSONData: any, options?: IFileOptions);
     }
 
 
     class SpriterXml extends SpriterFile {
-        constructor(xmlData: XMLDocument, minDefs?: any);
+        constructor(xmlData: XMLDocument, options?: IFileOptions);
     }
 
 

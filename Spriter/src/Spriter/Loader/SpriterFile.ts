@@ -2,11 +2,31 @@
 
     export enum eFileType { XML, JSON, BIN }
 
+    export enum eImageNameType { ORIGINAL, NAME_ONLY, NAME_AND_EXTENSION, FULL_PATH_NO_EXTENSION }
+
+    export interface IFileOptions {
+        imageNameType?: eImageNameType;
+        minDefs?: any;
+    }
+
     export abstract class SpriterFile {
 
         protected _minimized: boolean;
         private _minDefs: any;
         private _minDefsStack: any[];
+
+        private _imageNameType: eImageNameType;
+
+        // -------------------------------------------------------------------------
+        public constructor(options: IFileOptions) {
+
+            let hasOptions = typeof options !== "undefined" && options !== null;
+
+            // type of image names (path / name / extension)
+            this._imageNameType = (hasOptions && typeof options.imageNameType !== "undefined") ? options.imageNameType : eImageNameType.NAME_ONLY;
+            // min defs are present?
+            this._minDefs = (hasOptions && typeof options.minDefs !== "undefined") ? options.minDefs : null;
+        }
 
         // -------------------------------------------------------------------------
         public abstract getNodes(nodeName: string): ISpriterNodeList;
@@ -20,14 +40,13 @@
         }
 
         // -------------------------------------------------------------------------
-        protected setMinimized(minimized: boolean, minDefs: any = null) {
+        protected setMinimized(minimized: boolean) {
             this._minimized = minimized;
-            this._minDefs = minDefs;
 
             if (minimized) {
                 this._minDefsStack = [];
 
-                if (minDefs === null) {
+                if (this._minDefs === null) {
                     console.error("Spriter file is minimized - you must provide object with name definitions");
                     return;
                 }
@@ -35,8 +54,28 @@
         }
 
         // -------------------------------------------------------------------------
-        protected getFileNameWithoutExtension(path: string): string {
-            var name = (path.split('\\').pop().split('/').pop().split('.'))[0];
+        protected getFileName(path: string): string {
+
+            let name: string;
+
+            switch (this._imageNameType) {
+                case eImageNameType.NAME_ONLY:
+                    name = (path.split('\\').pop().split('/').pop().split('.'))[0];
+                    break;
+
+                case eImageNameType.NAME_AND_EXTENSION:
+                    name = path.split('\\').pop().split('/').pop();
+                    break;
+
+                case eImageNameType.FULL_PATH_NO_EXTENSION:
+                    name = (path.split('.'))[0];
+                    break;
+
+                case eImageNameType.ORIGINAL:
+                    name = path;
+                    break;
+            }
+            
             return name;
         }
 

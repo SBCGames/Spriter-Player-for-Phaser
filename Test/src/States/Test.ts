@@ -24,7 +24,7 @@
 
             // create Spriter file object - it wraps XML/JSON loaded with Phaser Loader
             //var spriterFile = new Spriter.SpriterXml(this.cache.getXML("TESTXml"));
-            var spriterFile = new Spriter.SpriterJSON(this.cache.getJSON("TESTJson"));
+            var spriterFile = new Spriter.SpriterJSON(this.cache.getJSON("TESTJson"), /* optional parameters */ { imageNameType: Spriter.eImageNameType.NAME_ONLY });
 
             // proces Spriter file (XML/JSON) with Spriter loader - outputs Spriter animation which you can instantiate multiple times with SpriterGroup
             var spriterData = spriterLoader.load(spriterFile);

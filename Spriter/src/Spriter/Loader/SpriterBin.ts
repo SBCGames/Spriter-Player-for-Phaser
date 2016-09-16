@@ -128,7 +128,7 @@ module Spriter {
 
         // -------------------------------------------------------------------------
         constructor(binData: ArrayBuffer) {
-            super();
+            super(null);
 
             this._bin = new DataView(binData);
             this._smallOffset = this._bin.getUint8(0) === 1;
@@ -291,7 +291,7 @@ module Spriter {
                         break;
                 }
             }
-            return new File(id, this.getFileNameWithoutExtension(name), pivotX, 1 - pivotY);
+            return new File(id, this.getFileName(name), pivotX, 1 - pivotY);
         }
 
         // -------------------------------------------------------------------------

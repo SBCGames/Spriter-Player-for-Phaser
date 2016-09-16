@@ -7,13 +7,13 @@ module Spriter {
         private _xml: XMLDocument;
 
         // -------------------------------------------------------------------------
-        constructor(xmlData: XMLDocument, minDefs: any = null) {
-            super();
+        constructor(xmlData: XMLDocument, options?: IFileOptions) {
+            super(options);
 
             this._xml = xmlData;
 
             var minimized = xmlData.documentElement.hasAttribute("min");
-            this.setMinimized(minimized, minDefs);
+            this.setMinimized(minimized);
         }
 
         // -------------------------------------------------------------------------
@@ -70,7 +70,7 @@ module Spriter {
 
             return new File(
                 this.parseInt(element, "id"),
-                this.getFileNameWithoutExtension(this.parseString(element, "name")),
+                this.getFileName(this.parseString(element, "name")),
                 this.parseFloat(element, "pivot_x"),
                 1 - this.parseFloat(element, "pivot_y"));
         }

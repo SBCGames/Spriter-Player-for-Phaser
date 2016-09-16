@@ -506,29 +506,54 @@ var Spriter;
         eFileType[eFileType["BIN"] = 2] = "BIN";
     })(Spriter.eFileType || (Spriter.eFileType = {}));
     var eFileType = Spriter.eFileType;
+    (function (eImageNameType) {
+        eImageNameType[eImageNameType["NAME_ONLY"] = 0] = "NAME_ONLY";
+        eImageNameType[eImageNameType["NAME_AND_EXTENSION"] = 1] = "NAME_AND_EXTENSION";
+        eImageNameType[eImageNameType["FULL_PATH_NO_EXTENSION"] = 2] = "FULL_PATH_NO_EXTENSION";
+        eImageNameType[eImageNameType["FULL_PATH_WITH_EXTENSION"] = 3] = "FULL_PATH_WITH_EXTENSION";
+    })(Spriter.eImageNameType || (Spriter.eImageNameType = {}));
+    var eImageNameType = Spriter.eImageNameType;
     var SpriterFile = (function () {
-        function SpriterFile() {
+        // -------------------------------------------------------------------------
+        function SpriterFile(options) {
+            var hasOptions = typeof options !== "undefined" && options !== null;
+            // type of image names (path / name / extension)
+            this._imageNameType = (hasOptions && typeof options.imageNameType !== "undefined") ? options.imageNameType : eImageNameType.NAME_ONLY;
+            // min defs are present?
+            this._minDefs = (hasOptions && typeof options.minDefs !== "undefined") ? options.minDefs : null;
         }
         // -------------------------------------------------------------------------
         SpriterFile.prototype.processed = function () {
             this.popMinDefsStack();
         };
         // -------------------------------------------------------------------------
-        SpriterFile.prototype.setMinimized = function (minimized, minDefs) {
-            if (minDefs === void 0) { minDefs = null; }
+        SpriterFile.prototype.setMinimized = function (minimized) {
             this._minimized = minimized;
-            this._minDefs = minDefs;
             if (minimized) {
                 this._minDefsStack = [];
-                if (minDefs === null) {
+                if (this._minDefs === null) {
                     console.error("Spriter file is minimized - you must provide object with name definitions");
                     return;
                 }
             }
         };
         // -------------------------------------------------------------------------
-        SpriterFile.prototype.getFileNameWithoutExtension = function (path) {
-            var name = (path.split('\\').pop().split('/').pop().split('.'))[0];
+        SpriterFile.prototype.getFileName = function (path) {
+            var name;
+            switch (this._imageNameType) {
+                case eImageNameType.NAME_ONLY:
+                    name = (path.split('\\').pop().split('/').pop().split('.'))[0];
+                    break;
+                case eImageNameType.NAME_AND_EXTENSION:
+                    name = path.split('\\').pop().split('/').pop();
+                    break;
+                case eImageNameType.FULL_PATH_NO_EXTENSION:
+                    name = (path.split('.'))[0];
+                    break;
+                case eImageNameType.FULL_PATH_WITH_EXTENSION:
+                    name = path;
+                    break;
+            }
             return name;
         };
         // -------------------------------------------------------------------------
@@ -591,7 +616,7 @@ var Spriter;
         __extends(SpriterBin, _super);
         // -------------------------------------------------------------------------
         function SpriterBin(binData) {
-            _super.call(this);
+            _super.call(this, null);
             this._elements = {
                 "spriter_data": 1,
                 "folder": 2,
@@ -741,7 +766,7 @@ var Spriter;
                         break;
                 }
             }
-            return new Spriter.File(id, this.getFileNameWithoutExtension(name), pivotX, 1 - pivotY);
+            return new Spriter.File(id, this.getFileName(name), pivotX, 1 - pivotY);
         };
         // -------------------------------------------------------------------------
         SpriterBin.prototype.getTag = function (position) {
@@ -1181,12 +1206,11 @@ var Spriter;
     var SpriterJSON = (function (_super) {
         __extends(SpriterJSON, _super);
         // -------------------------------------------------------------------------
-        function SpriterJSON(JSONData, minDefs) {
-            if (minDefs === void 0) { minDefs = null; }
-            _super.call(this);
+        function SpriterJSON(JSONData, options) {
+            _super.call(this, options);
             this._json = JSONData;
             var minimized = JSONData["min"] !== undefined;
-            this.setMinimized(minimized, minDefs);
+            this.setMinimized(minimized);
         }
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getType = function () {
@@ -1246,7 +1270,7 @@ var Spriter;
             if (element["type"] !== undefined && element["type"] === "sound") {
                 return null;
             }
-            return new Spriter.File(this.parseInt(element, "id"), this.getFileNameWithoutExtension(this.parseString(element, "name")), this.parseFloat(element, "pivot_x"), 1 - this.parseFloat(element, "pivot_y"));
+            return new Spriter.File(this.parseInt(element, "id"), this.getFileName(this.parseString(element, "name")), this.parseFloat(element, "pivot_x"), 1 - this.parseFloat(element, "pivot_y"));
         };
         // -------------------------------------------------------------------------
         SpriterJSON.prototype.getTag = function (element) {
@@ -1383,12 +1407,11 @@ var Spriter;
     var SpriterXml = (function (_super) {
         __extends(SpriterXml, _super);
         // -------------------------------------------------------------------------
-        function SpriterXml(xmlData, minDefs) {
-            if (minDefs === void 0) { minDefs = null; }
-            _super.call(this);
+        function SpriterXml(xmlData, options) {
+            _super.call(this, options);
             this._xml = xmlData;
             var minimized = xmlData.documentElement.hasAttribute("min");
-            this.setMinimized(minimized, minDefs);
+            this.setMinimized(minimized);
         }
         // -------------------------------------------------------------------------
         SpriterXml.prototype.getType = function () {
@@ -1433,7 +1456,7 @@ var Spriter;
             if (element.hasAttribute("type") && element.getAttribute("type") === "sound") {
                 return null;
             }
-            return new Spriter.File(this.parseInt(element, "id"), this.getFileNameWithoutExtension(this.parseString(element, "name")), this.parseFloat(element, "pivot_x"), 1 - this.parseFloat(element, "pivot_y"));
+            return new Spriter.File(this.parseInt(element, "id"), this.getFileName(this.parseString(element, "name")), this.parseFloat(element, "pivot_x"), 1 - this.parseFloat(element, "pivot_y"));
         };
         // -------------------------------------------------------------------------
         SpriterXml.prototype.getTag = function (element) {
