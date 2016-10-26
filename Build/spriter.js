@@ -2388,7 +2388,7 @@ var Spriter;
             "sound": 4 /* SOUND */
         };
         Types.nameToCurveType = {
-            "instatnt": 1 /* INSTANT */,
+            "instant": 1 /* INSTANT */,
             "linear": 0 /* LINEAR */,
             "quadratic": 2 /* QUADRATIC */,
             "cubic": 3 /* CUBIC */,
