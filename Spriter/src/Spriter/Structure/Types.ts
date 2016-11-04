@@ -23,7 +23,7 @@
         }
 
         private static nameToCurveType = {
-            "instatnt":     eCurveType.INSTANT,
+            "instant":     eCurveType.INSTANT,
             "linear":       eCurveType.LINEAR,
             "quadratic":    eCurveType.QUADRATIC,
             "cubic":        eCurveType.CUBIC,
