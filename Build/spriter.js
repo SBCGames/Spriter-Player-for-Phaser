@@ -507,10 +507,10 @@ var Spriter;
     })(Spriter.eFileType || (Spriter.eFileType = {}));
     var eFileType = Spriter.eFileType;
     (function (eImageNameType) {
-        eImageNameType[eImageNameType["NAME_ONLY"] = 0] = "NAME_ONLY";
-        eImageNameType[eImageNameType["NAME_AND_EXTENSION"] = 1] = "NAME_AND_EXTENSION";
-        eImageNameType[eImageNameType["FULL_PATH_NO_EXTENSION"] = 2] = "FULL_PATH_NO_EXTENSION";
-        eImageNameType[eImageNameType["FULL_PATH_WITH_EXTENSION"] = 3] = "FULL_PATH_WITH_EXTENSION";
+        eImageNameType[eImageNameType["ORIGINAL"] = 0] = "ORIGINAL";
+        eImageNameType[eImageNameType["NAME_ONLY"] = 1] = "NAME_ONLY";
+        eImageNameType[eImageNameType["NAME_AND_EXTENSION"] = 2] = "NAME_AND_EXTENSION";
+        eImageNameType[eImageNameType["FULL_PATH_NO_EXTENSION"] = 3] = "FULL_PATH_NO_EXTENSION";
     })(Spriter.eImageNameType || (Spriter.eImageNameType = {}));
     var eImageNameType = Spriter.eImageNameType;
     var SpriterFile = (function () {
@@ -550,7 +550,7 @@ var Spriter;
                 case eImageNameType.FULL_PATH_NO_EXTENSION:
                     name = (path.split('.'))[0];
                     break;
-                case eImageNameType.FULL_PATH_WITH_EXTENSION:
+                case eImageNameType.ORIGINAL:
                     name = path;
                     break;
             }
