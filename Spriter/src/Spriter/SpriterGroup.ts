@@ -15,6 +15,10 @@
         public onTagChange: Phaser.Signal = new Phaser.Signal();
         // onVariableSet(SpriterGroup, Variable); // Variable is Spriter variable def with access to value
         public onVariableSet: Phaser.Signal = new Phaser.Signal();
+        // onBoxUpdated(SpriterGroup, SpriterObject);
+        public onBoxUpdated: Phaser.Signal = new Phaser.Signal();
+        // onPointUpdated(SpriterGroup, SpriterObject);
+        public onPointUpdated: Phaser.Signal = new Phaser.Signal();
 
         private _spriter: Spriter;
         private _textureKey: string;
@@ -412,6 +416,12 @@
                     var parentSpatial = (object.parent === -1) ? this._root : this._bones[object.parent].transformed;
                     object.tween(this._time);
                     object.update(parentSpatial);
+
+                    if (object.type === eObjectType.BOX) {
+                        this.onBoxUpdated.dispatch(this, object);
+                    } else if (object.type === eObjectType.POINT) {
+                        this.onPointUpdated.dispatch(this, object);
+                    }
 
                     //// TODO remove - debug
                     //if (object.type === eObjectType.BOX) {

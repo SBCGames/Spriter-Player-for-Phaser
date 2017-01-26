@@ -2,6 +2,7 @@
 **2017-01-26**
 
 - small bugfix. Objects of type BOX and POINT are processed now (their processing was accidentally commented out).
+- added two new signals into Spriter.SpriterGroup: onBoxUpdated, onPointUpdated to listen for updates of BOX and POINT Spriter objects.
 
 </br>
 </br>
