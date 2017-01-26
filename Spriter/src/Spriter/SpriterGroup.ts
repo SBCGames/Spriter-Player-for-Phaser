@@ -324,20 +324,19 @@
                         object.sprite.z = ref.z;
                         zChange = true;
                     }
-                }
-                //// TODO remove - debug
-                //else {
-                //    object.setOn(true);
+                } else {
+                    object.setOn(true);
 
-                //    if (object.type === eObjectType.POINT) {
-                //        object.setOn(true);
-                //        object.sprite.frameName = "DebugPoint";
-                //        object.sprite.anchor.set(0.5, 0.5);
-                //    } else if (object.type === eObjectType.BOX) {
-                //        object.setOn(true);
-                //        object.sprite.frameName = "DebugBox";
-                //    }
-                //}
+                    // TODO remove - debug
+                    //if (object.type === eObjectType.POINT) {
+                    //    object.setOn(true);
+                    //    object.sprite.frameName = "DebugPoint";
+                    //    object.sprite.anchor.set(0.5, 0.5);
+                    //} else if (object.type === eObjectType.BOX) {
+                    //    object.setOn(true);
+                    //    object.sprite.frameName = "DebugBox";
+                    //}
+                }
 
 
                 if (object.timelineKey !== ref.key || object.timeline !== ref.timeline || force) {

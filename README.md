@@ -1,4 +1,11 @@
 # Spriter-Player-for-Phaser
+**2017-01-26**
+
+- small bugfix. Objects of type BOX and POINT are processed now (their processing was accidentally commented out).
+
+</br>
+</br>
+
 **2016-09-16**
 
 - added optional parameter in Spriter.SpriterJSON and Spriter.SpriterXml of type IFileOptions. This parameter is object with some optional keys. Currently important is <b>imageNameType</b> of type Spriter.eImageNameType. It converts and returns name of image taken from Spriter animation file in this way (let's assume name in animation file is path/image_name.png):

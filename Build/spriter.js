@@ -3393,18 +3393,9 @@ var Spriter;
                         zChange = true;
                     }
                 }
-                //// TODO remove - debug
-                //else {
-                //    object.setOn(true);
-                //    if (object.type === eObjectType.POINT) {
-                //        object.setOn(true);
-                //        object.sprite.frameName = "DebugPoint";
-                //        object.sprite.anchor.set(0.5, 0.5);
-                //    } else if (object.type === eObjectType.BOX) {
-                //        object.setOn(true);
-                //        object.sprite.frameName = "DebugBox";
-                //    }
-                //}
+                else {
+                    object.setOn(true);
+                }
                 if (object.timelineKey !== ref.key || object.timeline !== ref.timeline || force) {
                     object.setKey(this._entity, this._animation, ref.timeline, ref.key);
                 }
@@ -3592,3 +3583,4 @@ var Spriter;
     }(Spriter.SpriterBone));
     Spriter.SpriterObject = SpriterObject;
 })(Spriter || (Spriter = {}));
+//# sourceMappingURL=spriter.js.map
