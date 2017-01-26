@@ -3134,6 +3134,10 @@ var Spriter;
             this.onTagChange = new Phaser.Signal();
             // onVariableSet(SpriterGroup, Variable); // Variable is Spriter variable def with access to value
             this.onVariableSet = new Phaser.Signal();
+            // onBoxUpdated(SpriterGroup, SpriterObject);
+            this.onBoxUpdated = new Phaser.Signal();
+            // onPointUpdated(SpriterGroup, SpriterObject);
+            this.onPointUpdated = new Phaser.Signal();
             this._mainlineStepper = new Spriter.LineStepper();
             this._lineSteppers = [];
             this._lineSteppersCount = 0;
@@ -3458,6 +3462,12 @@ var Spriter;
                     var parentSpatial = (object.parent === -1) ? this._root : this._bones[object.parent].transformed;
                     object.tween(this._time);
                     object.update(parentSpatial);
+                    if (object.type === 2 /* BOX */) {
+                        this.onBoxUpdated.dispatch(this, object);
+                    }
+                    else if (object.type === 3 /* POINT */) {
+                        this.onPointUpdated.dispatch(this, object);
+                    }
                 }
             }
         };
