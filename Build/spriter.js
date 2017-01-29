@@ -3398,7 +3398,7 @@ var Spriter;
                     }
                 }
                 else {
-                    object.setOn(true);
+                    object.setOn(true, true);
                 }
                 if (object.timelineKey !== ref.key || object.timeline !== ref.timeline || force) {
                     object.setKey(this._entity, this._animation, ref.timeline, ref.key);
@@ -3462,7 +3462,10 @@ var Spriter;
                     var parentSpatial = (object.parent === -1) ? this._root : this._bones[object.parent].transformed;
                     object.tween(this._time);
                     object.update(parentSpatial);
-                    if (object.type === 2 /* BOX */) {
+                    if (object.type === 0 /* SPRITE */) {
+                        object.updateSprite();
+                    }
+                    else if (object.type === 2 /* BOX */) {
                         this.onBoxUpdated.dispatch(this, object);
                     }
                     else if (object.type === 3 /* POINT */) {
@@ -3537,10 +3540,12 @@ var Spriter;
             configurable: true
         });
         // -------------------------------------------------------------------------
-        SpriterObject.prototype.setOn = function (on) {
+        SpriterObject.prototype.setOn = function (on, hideSprite) {
+            if (hideSprite === void 0) { hideSprite = false; }
             _super.prototype.setOn.call(this, on);
-            this._sprite.exists = on;
-            this._sprite.visible = (on && !this._hide);
+            // hide sprite for non-sprite objects
+            this._sprite.exists = on && !hideSprite;
+            this._sprite.visible = (on && !this._hide && !hideSprite);
         };
         // -------------------------------------------------------------------------
         SpriterObject.prototype.setKey = function (entity, animation, timelineId, keyId) {
@@ -3573,11 +3578,6 @@ var Spriter;
                 this._hide = true;
                 this._sprite.visible = false;
             }
-        };
-        // -------------------------------------------------------------------------
-        SpriterObject.prototype.update = function (parent) {
-            _super.prototype.update.call(this, parent);
-            this.updateSprite();
         };
         // -------------------------------------------------------------------------
         SpriterObject.prototype.updateSprite = function () {

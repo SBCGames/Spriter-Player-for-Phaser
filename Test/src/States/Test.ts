@@ -5,6 +5,9 @@
         private _spriterGroup: Spriter.SpriterGroup;
         private _text: string = "";
 
+        // help item
+        private _item: Phaser.Sprite;
+
         // -------------------------------------------------------------------------
         constructor() {
             super();
@@ -13,6 +16,14 @@
         // -------------------------------------------------------------------------
         create() {
             this.stage.backgroundColor = 0x527F68;
+
+            // ===============================================================
+            // HELP ITEM (book image)
+            // ===============================================================
+            this._item = new Phaser.Sprite(this.game, 0, 0, "Item");
+            this._item.anchor.set(0.5, 0.95);
+            this._item.exists = false;
+            this.world.add(this._item);
 
 
             // ===============================================================
@@ -37,7 +48,6 @@
             this.world.add(this._spriterGroup);
 
 
-
             // ===============================================================
             // LISTENING TO SIGNALS
             // ===============================================================
@@ -47,6 +57,19 @@
                 this._text = variable.string;
             }, this);
 
+
+            // add point update callback
+            this._spriterGroup.onPointUpdated.add(function (spriter: Spriter.SpriterGroup, pointObj: Spriter.SpriterObject) {
+                if (this._item.exists) {
+                    let transformed = pointObj.transformed;
+
+                    // add SpriterGroups position and angle, bacause _item is in world space, but transformed values are in SpriterGroup local space
+                    this._item.position.set(spriter.x + transformed.x, spriter.y + transformed.y);
+                    // magic number 62.477 is initial angle of hand image in spriter animation. Compensate here to keep _item (book) more or less vertical
+                    // if _item was something like gun or sword, it would look good without this compensation
+                    this._item.angle = spriter.angle - 62.447 + transformed.angle;
+                }
+            }, this);
 
 
             // ===============================================================
@@ -76,6 +99,12 @@
                     ++charmapID;
                 }
             }, this);
+
+            // on I key show / hide item attached to point
+            key = this.game.input.keyboard.addKey(Phaser.Keyboard.I);
+            key.onDown.add(function () {
+                this._item.exists = !this._item.exists;
+            }, this);
         }
 
         // -------------------------------------------------------------------------
@@ -87,7 +116,8 @@
         render() {
             this.game.debug.text("Playing animation: " + this._spriterGroup.currentAnimationName + " (Press A to next...)", 50, 30, "rgb(255, 255, 255)");
             this.game.debug.text("Press C to cycle charmaps", 50, 46, "rgb(255, 255, 255)");
-            this.game.debug.text(this._text, 180, 232, "rgb(255, 255, 255)");
+            this.game.debug.text("Press I to show / hide attached item (book)", 50, 62, "rgb(255, 255, 255)");
+            this.game.debug.text(this._text, 80, 232, "rgb(255, 255, 255)");
         }
 
 

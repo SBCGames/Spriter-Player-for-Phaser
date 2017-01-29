@@ -23,6 +23,9 @@
             this.load.atlas("TEST", path + "Atlas.png", path + "Atlas.json");
             this.load.xml("TESTXml", path + "TEST.xml");
             this.load.json("TESTJson", path + "TEST.json");
+
+            // item (book) image
+            this.load.image("Item", path + "Item.png");
         }
 
         // -------------------------------------------------------------------------

@@ -329,7 +329,7 @@
                         zChange = true;
                     }
                 } else {
-                    object.setOn(true);
+                    object.setOn(true, true);
 
                     // TODO remove - debug
                     //if (object.type === eObjectType.POINT) {
@@ -417,7 +417,9 @@
                     object.tween(this._time);
                     object.update(parentSpatial);
 
-                    if (object.type === eObjectType.BOX) {
+                    if (object.type === eObjectType.SPRITE) {
+                        object.updateSprite();
+                    } else if (object.type === eObjectType.BOX) {
                         this.onBoxUpdated.dispatch(this, object);
                     } else if (object.type === eObjectType.POINT) {
                         this.onPointUpdated.dispatch(this, object);

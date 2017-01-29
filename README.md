@@ -1,4 +1,12 @@
 # Spriter-Player-for-Phaser
+**2017-01-29**
+
+- adjustments to allow proper work with BOX and POINT Spriter objects
+- changed Test example - character now holds book in his hand if "I" key was pressed. This book is attached to Spriter POINT object, which is part of animation. Book is separate Phaser.Sprite image.
+
+</br>
+</br>
+
 **2017-01-26**
 
 - small bugfix. Objects of type BOX and POINT are processed now (their processing was accidentally commented out).

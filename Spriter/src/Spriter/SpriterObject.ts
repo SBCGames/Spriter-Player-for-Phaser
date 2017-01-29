@@ -25,11 +25,12 @@ module Spriter {
         }
 
         // -------------------------------------------------------------------------
-        public setOn(on: boolean): void {
+        public setOn(on: boolean, hideSprite: boolean = false): void {
             super.setOn(on);
 
-            this._sprite.exists = on;
-            this._sprite.visible = (on && !this._hide);
+            // hide sprite for non-sprite objects
+            this._sprite.exists = on && !hideSprite;
+            this._sprite.visible = (on && !this._hide && !hideSprite);
         }
 
         // -------------------------------------------------------------------------
@@ -65,13 +66,6 @@ module Spriter {
                 this._hide = true;
                 this._sprite.visible = false;
             }
-        }
-
-        // -------------------------------------------------------------------------
-        public update(parent: SpatialInfo): void {
-            super.update(parent);
-
-            this.updateSprite();
         }
 
         // -------------------------------------------------------------------------

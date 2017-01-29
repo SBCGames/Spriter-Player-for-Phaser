@@ -90,6 +90,8 @@ var SpriterExample;
             this.load.atlas("TEST", path + "Atlas.png", path + "Atlas.json");
             this.load.xml("TESTXml", path + "TEST.xml");
             this.load.json("TESTJson", path + "TEST.json");
+            // item (book) image
+            this.load.image("Item", path + "Item.png");
         };
         // -------------------------------------------------------------------------
         Preloader.prototype.onBinaryLoaded = function (key, data) {
@@ -116,6 +118,13 @@ var SpriterExample;
         Test.prototype.create = function () {
             this.stage.backgroundColor = 0x527F68;
             // ===============================================================
+            // HELP ITEM (book image)
+            // ===============================================================
+            this._item = new Phaser.Sprite(this.game, 0, 0, "Item");
+            this._item.anchor.set(0.5, 0.95);
+            this._item.exists = false;
+            this.world.add(this._item);
+            // ===============================================================
             // BASIC SETUP
             // ===============================================================
             // create Spriter loader - class that can change Spriter file into internal structure
@@ -136,6 +145,17 @@ var SpriterExample;
             // Spriter animation can send info on when sounds, events, tags, variable - here we are listening to Phaser.Signals when animation variable is set
             this._spriterGroup.onVariableSet.add(function (spriter, variable) {
                 this._text = variable.string;
+            }, this);
+            // add point update callback
+            this._spriterGroup.onPointUpdated.add(function (spriter, pointObj) {
+                if (this._item.exists) {
+                    var transformed = pointObj.transformed;
+                    // add SpriterGroups position and angle, bacause _item is in world space, but transformed values are in SpriterGroup local space
+                    this._item.position.set(spriter.x + transformed.x, spriter.y + transformed.y);
+                    // magic number 62.477 is initial angle of hand image in spriter animation. Compensate here to keep _item (book) more or less vertical
+                    // if _item was something like gun or sword, it would look good without this compensation
+                    this._item.angle = spriter.angle - 62.447 + transformed.angle;
+                }
             }, this);
             // ===============================================================
             // REST OF THE EXAMPLE - change animations, change charmaps
@@ -162,6 +182,11 @@ var SpriterExample;
                     ++charmapID;
                 }
             }, this);
+            // on I key show / hide item attached to point
+            key = this.game.input.keyboard.addKey(Phaser.Keyboard.I);
+            key.onDown.add(function () {
+                this._item.exists = !this._item.exists;
+            }, this);
         };
         // -------------------------------------------------------------------------
         Test.prototype.update = function () {
@@ -171,7 +196,8 @@ var SpriterExample;
         Test.prototype.render = function () {
             this.game.debug.text("Playing animation: " + this._spriterGroup.currentAnimationName + " (Press A to next...)", 50, 30, "rgb(255, 255, 255)");
             this.game.debug.text("Press C to cycle charmaps", 50, 46, "rgb(255, 255, 255)");
-            this.game.debug.text(this._text, 180, 232, "rgb(255, 255, 255)");
+            this.game.debug.text("Press I to show / hide attached item (book)", 50, 62, "rgb(255, 255, 255)");
+            this.game.debug.text(this._text, 80, 232, "rgb(255, 255, 255)");
         };
         return Test;
     }(Phaser.State));

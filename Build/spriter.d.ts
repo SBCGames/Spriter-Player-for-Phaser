@@ -68,6 +68,10 @@ declare module Spriter {
         onTagChange: Phaser.Signal;
         // onVariableSet(SpriterGroup, Variable); // Variable is Spriter variable def with access to value
         onVariableSet: Phaser.Signal;
+        // onBoxUpdated(SpriterGroup, SpriterObject);
+        onBoxUpdated: Phaser.Signal;
+        // onPointUpdated(SpriterGroup, SpriterObject);
+        onPointUpdated: Phaser.Signal;
 
         // get loaded Spriter structure
         spriter: Spriter;
@@ -137,8 +141,32 @@ declare module Spriter {
     }
 
 
-    class SpriterBone {
+    class SpatialInfo {
+        // position
+        x: number;
+        y: number;
 
+        // scale
+        scaleX: number;
+        scaleY: number;
+
+        // pivot (anchor)
+        pivotX: number;
+        pivotY: number;
+
+        // alpha
+        alpha: number;
+
+        // angle
+        angle: number;
+    }
+
+
+    class SpriterBone {
+        // name of bone / object
+        name: string;
+        // info on transformation
+        transformed: SpatialInfo;
     }
 
 
