@@ -47,7 +47,6 @@
             // adds SpriterGroup to Phaser.World to appear on screen
             this.world.add(this._spriterGroup);
 
-
             // ===============================================================
             // LISTENING TO SIGNALS
             // ===============================================================

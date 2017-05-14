@@ -3205,7 +3205,7 @@ var Spriter;
             },
             // -------------------------------------------------------------------------
             set: function (paused) {
-                this.paused = paused;
+                this._paused = paused;
             },
             enumerable: true,
             configurable: true
