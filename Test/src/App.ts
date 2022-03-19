@@ -1,24 +1,19 @@
-﻿module SpriterExample {
+﻿import { Game } from "./Game";
 
-    export class Global {
-        // game derived from Phaser.Game
-        static game: Game = null;
+export class Global {
+    // game derived from Phaser.Game
+    static game: Game = null;
 
-        // game size
-        static GAME_WIDTH: number = 640;
-        static GAME_HEIGHT: number = 640;
+    // game size
+    static GAME_WIDTH: number = 640;
+    static GAME_HEIGHT: number = 640;
 
-        // assets path
-        static assetsPath: string = "assets/";
-    }
-}
-
-var PhaserGlobal = {
-    stopFocus: true
+    // assets path
+    static assetsPath: string = "assets/";
 }
 
 // -------------------------------------------------------------------------
 window.onload = () => {
-    SpriterExample.Global.game = new SpriterExample.Game();
+    Global.game = new Game();
 };
 

@@ -1,8 +1,5 @@
-﻿/// <reference path="KeyTimeline.ts" />
+﻿import { KeyTimeline } from "./KeyTimeline";
 
-module Spriter {
+export class KeyBone extends KeyTimeline {
 
-    export class KeyBone extends KeyTimeline {
-
-    }
 }

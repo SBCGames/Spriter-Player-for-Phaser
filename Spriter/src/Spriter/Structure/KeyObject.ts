@@ -1,26 +1,23 @@
-﻿/// <reference path="KeyTimeline.ts" />
+﻿import { KeyTimeline } from "./KeyTimeline";
 
-module Spriter {
+export class KeyObject extends KeyTimeline {
 
-    export class KeyObject extends KeyTimeline {
+    private _folder: number;
+    private _file: number;
 
-        private _folder: number;
-        private _file: number;
+    // -------------------------------------------------------------------------
+    public setFolderAndFile(folder: number, file: number): void {
+        this._folder = folder;
+        this._file = file;
+    }
 
-        // -------------------------------------------------------------------------
-        public setFolderAndFile(folder: number, file: number): void {
-            this._folder = folder;
-            this._file = file;
-        }
+    // -------------------------------------------------------------------------
+    public get folder(): number {
+        return this._folder;
+    }
 
-        // -------------------------------------------------------------------------
-        public get folder(): number {
-            return this._folder;
-        }
-
-        // -------------------------------------------------------------------------
-        public get file(): number {
-            return this._file;
-        }
+    // -------------------------------------------------------------------------
+    public get file(): number {
+        return this._file;
     }
 }

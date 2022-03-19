@@ -389,7 +389,7 @@ declare module p2 {
         restitution: number;
         stiffness: number;
         relaxation: number;
-        frictionStuffness: number;
+        frictionStiffness: number;
         frictionRelaxation: number;
         surfaceVelocity: number;
         contactSkinSize: number;
@@ -444,16 +444,16 @@ declare module p2 {
 
     }
 
-    export class BodyOptions {
+    export interface BodyOptions {
 
-        mass: number;
-        position: number[];
-        velocity: number[];
-        angle: number;
-        angularVelocity: number;
-        force: number[];
-        angularForce: number;
-        fixedRotation: number;
+        mass?: number;
+        position?: number[];
+        velocity?: number[];
+        angle?: number;
+        angularVelocity?: number;
+        force?: number[];
+        angularForce?: number;
+        fixedRotation?: boolean;
 
     }
 
@@ -616,7 +616,7 @@ declare module p2 {
 
         static triangleArea(a: number[], b: number[], c: number[]): number;
 
-        constructor(vertices: number[][], axes: number[]);
+        constructor(options?: any);
 
         vertices: number[][];
         axes: number[];
@@ -646,6 +646,23 @@ declare module p2 {
 
     }
 
+    export interface SharedShapeOptions {
+
+        position?: number[];
+        angle?: number;
+        collisionGroup?: number;
+        collisionResponse?: boolean;
+        collisionMask?: number;
+        sensor?: boolean;
+
+    }
+
+    export interface ShapeOptions extends SharedShapeOptions {
+
+        type?: number;
+
+    }
+
     export class Shape {
 
         static idCounter: number;
@@ -658,7 +675,7 @@ declare module p2 {
         static CAPSULE: number;
         static HEIGHTFIELD: number;
 
-        constructor(type: number);
+        constructor(options?: ShapeOptions);
 
         type: number;
         id: number;
@@ -690,6 +707,20 @@ declare module p2 {
 
     export class Plane extends Shape {
 
+    }
+
+    export interface BoxOptions {
+
+        width?: number;
+        height?: number;
+
+    }
+
+    export class Box extends Shape {
+        constructor(options?: BoxOptions);
+
+        width: number;
+        height: number;
     }
 
     export class Rectangle extends Shape {

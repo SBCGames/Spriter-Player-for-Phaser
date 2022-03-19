@@ -1,63 +1,63 @@
-﻿module Spriter {
+﻿import { Item } from "./Item";
+import { Key }  from "./Key";
 
-    export enum eTimelineType {
-        UNKNOWN, MAIN_LINE, TIME_LINE, SOUND_LINE, EVENT_LINE, TAG_LINE, VAR_LINE
+export enum eTimelineType {
+    UNKNOWN, MAIN_LINE, TIME_LINE, SOUND_LINE, EVENT_LINE, TAG_LINE, VAR_LINE
+}
+
+export class Baseline extends Item {
+
+    private _type: eTimelineType;
+
+    private _keys: Key[];
+
+    // -------------------------------------------------------------------------
+    public constructor(id: number, name: string = null) {
+        super(id, name);
+
+        this._type = eTimelineType.UNKNOWN;
     }
 
-    export class Baseline extends Item {
+    // -------------------------------------------------------------------------
+    public get type(): eTimelineType {
+        return this._type;
+    }
 
-        private _type: eTimelineType;
+    // -------------------------------------------------------------------------
+    public set type(type: eTimelineType) {
+        this._type = type;
+    }
 
-        private _keys: Key[];
-        
-        // -------------------------------------------------------------------------
-        public constructor(id: number, name: string = null) {
-            super(id, name);
+    // -------------------------------------------------------------------------
+    public get keys(): Key[] {
+        return this._keys;
+    }
 
-            this._type = eTimelineType.UNKNOWN;
+    // -------------------------------------------------------------------------
+    public add(key: Key): void {
+        if (this._keys === null || this._keys === undefined) {
+            this._keys = [];
         }
 
-        // -------------------------------------------------------------------------
-        public get type(): eTimelineType {
-            return this._type;
+        this._keys.push(key);
+    }
+
+    // -------------------------------------------------------------------------
+    public at(index: number, loop: boolean = true): Key {
+        if (index < 0) {
+            return null;
         }
 
-        // -------------------------------------------------------------------------
-        public set type(type: eTimelineType) {
-            this._type = type;
-        }
+        var length = this._keys.length;
 
-        // -------------------------------------------------------------------------
-        public get keys(): Key[] {
-            return this._keys;
-        }
-
-        // -------------------------------------------------------------------------
-        public add(key: Key): void {
-            if (this._keys === null || this._keys === undefined) {
-                this._keys = [];
+        if (index >= length) {
+            if (loop) {
+                index = index % length;
+            } else {
+                index = length - 1;
             }
-
-            this._keys.push(key);
         }
 
-        // -------------------------------------------------------------------------
-        public at(index: number, loop: boolean = true): Key {
-            if (index < 0) {
-                return null;
-            }
-
-            var length = this._keys.length;
-
-            if (index >= length) {
-                if (loop) {
-                    index = index % length;
-                } else {
-                    index = length - 1;
-                }
-            }
-
-            return this._keys[index];
-        }
+        return this._keys[index];
     }
 }

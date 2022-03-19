@@ -8,27 +8,32 @@
     <OutputType>Library</OutputType>
     <OutputPath>bin</OutputPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>4.6</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
+    <Content Include="webpack.config.js" />
+    <Content Include="webpack.release.config.js" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="lib\p2.d.ts" />
     <TypeScriptCompile Include="lib\phaser.d.ts" />
     <TypeScriptCompile Include="lib\pixi.d.ts" />
     <TypeScriptCompile Include="src\Spriter\IdNameMap.ts" />
+    <TypeScriptCompile Include="src\Spriter\index.ts" />
     <TypeScriptCompile Include="src\Spriter\LineStepper.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\ISpriterNodeList.ts" />
     <TypeScriptCompile Include="src\Spriter\Loader\NodeListBin.ts" />
@@ -68,6 +73,8 @@
     <TypeScriptCompile Include="src\Spriter\SpriterObject.ts" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="package.json" />
+    <Content Include="tsconfig.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -103,9 +110,9 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
     <TypeScriptSourceMap>True</TypeScriptSourceMap>
-    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptTarget>ES2016</TypeScriptTarget>
     <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
     <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
@@ -118,8 +125,8 @@
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <TypeScriptRemoveComments>true</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>false</TypeScriptSourceMap>
+    <TypeScriptRemoveComments>True</TypeScriptRemoveComments>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptTarget>ES5</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>False</TypeScriptCompileOnSaveEnabled>
@@ -135,7 +142,10 @@
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets')" />
   <PropertyGroup>
     <PostBuildEvent>if $(ConfigurationName) == Release (
-  uglifyjs ..\..\Build\spriter.min.js -m -c "unused=true,dead_code=true,drop_console=true" --output ..\..\Build\spriter.min.js
-)</PostBuildEvent>
+   npm run release
+) else (
+   npm run build
+)
+</PostBuildEvent>
   </PropertyGroup>
 </Project>
