@@ -1,4 +1,11 @@
 # Spriter-Player-for-Phaser
+**2022-03-19**
+
+- fixed for Phaser 2.19.2
+
+</br>
+</br>
+
 **2017-01-29**
 
 - adjustments to allow proper work with BOX and POINT Spriter objects
