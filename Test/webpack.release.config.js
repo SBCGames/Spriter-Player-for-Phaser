@@ -1,6 +1,6 @@
 "use strict";
 
-const UglifyJSPlugin = require("uglifyjs-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -39,20 +39,20 @@ module.exports = {
     performance: { hints: false },
 
     optimization: {
+        minimize: true,
         minimizer: [
-            new UglifyJSPlugin({
-                include: "test.js",
+            new TerserPlugin({
                 parallel: true,
-                sourceMap: false,
-                uglifyOptions: {
-                    compress: true,
-                    ie8: false,
-                    ecma: 5,
-                    output: { comments: false },
-                    warnings: false
+                terserOptions: {
+                    compress: {
+                        drop_console: true,
+                    },
+                    output: {
+                        comments: false,
+                    },
                 },
-                warningsFilter: () => false
-            })
-        ]
+                extractComments: false,
+            }),
+        ],
     }
 };
