@@ -7,7 +7,7 @@
 		exports["Spriter"] = factory();
 	else
 		root["Spriter"] = factory();
-})(self, function() {
+})(self, () => {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({

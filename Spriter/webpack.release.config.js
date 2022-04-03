@@ -13,7 +13,7 @@ module.exports = {
 
     output: {
         path: `${__dirname}/js/`,
-        filename: "[name].js",
+        filename: "[name].min.js",
         library: "Spriter",
         libraryTarget: "umd",
         umdNamedDefine: true
