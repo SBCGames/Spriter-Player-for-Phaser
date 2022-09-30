@@ -1,10 +1,35 @@
 # Spriter-Player-for-Phaser
+
+## Installing from npm
+
+```
+npm install phaser-ce-spriter
+```
+
+The npm package contains the following outputs:
+
+* Basic UMD bundle that works in browsers in `dist/spriter.js`
+* Same, but minified & optimized in	`dist/spriter.min.js`
+* CJS module, for use with `require` in `dist/cjs`
+* ESM module, for use with `import` in `dist/esm`
+* Source maps
+* TypeScript definitions
+
+(Note from package maintainer:
+The setup follows roughly the guidelines from https://marcobotto.com/blog/compiling-and-bundling-typescript-libraries-with-webpack/)
+
+## Changelog
+
+**2022-09-30**
+
+- Released to NPM as phaser-ce-spriter v1.0.0
+
+</br>
+</br>
+
 **2022-03-19**
 
 - fixed for Phaser 2.19.2
-
-</br>
-</br>
 
 **2017-01-29**
 

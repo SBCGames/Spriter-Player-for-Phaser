@@ -1,14 +1,17 @@
 {
   "compilerOptions": {
+    "module": "es6",
+    "outDir": "dist/esm",
+    "target": "es2015",
+    "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitAny": false,
     "noEmitOnError": true,
     "removeComments": false,
     "sourceMap": true,
-    "target": "es5",
+    "moduleResolution": "node",
     "lib": [ "es5", "dom", "es2015.promise", "es2017", "scripthost" ],
-    "outDir": "out",
     "baseUrl": ".",
     "paths": {
       "gameModules/*": [
@@ -18,12 +21,11 @@
   },
   "include": [
     "lib/**/*",
-
     "src/**/*"
   ],
   "exclude": [
     "node_modules",
     "wwwroot",
-    "js/**/*"
+    "dist/**/*"
   ]
 }
