@@ -19,7 +19,7 @@
 		"access": "public"
 	},
   "scripts": {
-    "release": "webpack; webpack --config webpack.release.config.js; tsc -m commonjs --outDir dist/cjs",
+    "release": "webpack; webpack --config webpack.release.config.js; tsc; tsc -m commonjs --outDir dist/cjs",
     "clean": "rm -r dist/*",
     "build": "webpack",
 		"prepublishOnly": "npm run clean; npm run release"
