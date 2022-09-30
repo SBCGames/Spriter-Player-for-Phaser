@@ -1,6 +1,6 @@
 {
   "name": "phaser-ce-spriter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Play animations made with Spriter in Phaser engine. Load .xml, .json or special compact binary format.",
   "repository": {
     "type": "git",
@@ -13,16 +13,16 @@
   "homepage": "https://github.com/SBCGames/Spriter-Player-for-Phaser#readme",
   "files": [
     "dist/**"
-	],
+  ],
   "license": "MIT",
-	"publishConfig": {
-		"access": "public"
-	},
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "release": "webpack; webpack --config webpack.release.config.js; tsc; tsc -m commonjs --outDir dist/cjs",
     "clean": "rm -r dist/*",
     "build": "webpack",
-		"prepublishOnly": "npm run clean; npm run release"
+    "prepublishOnly": "npm run clean; npm run release"
   },
   "exports": {
     ".": {

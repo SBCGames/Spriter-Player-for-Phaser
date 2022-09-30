@@ -22,7 +22,8 @@ The setup follows roughly the guidelines from https://marcobotto.com/blog/compil
 
 **2022-09-30**
 
-- Released to NPM as phaser-ce-spriter v1.0.0
+- Released to NPM as phaser-ce-spriter v1.0.1 
+- Do not use v1.0.0, it's missing some files in the ESM variant.
 
 </br>
 </br>
